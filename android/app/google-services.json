@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "309114017397",
+    "project_id": "plan-nutricional-571b9",
+    "storage_bucket": "plan-nutricional-571b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309114017397:android:90466771619ab21b608a3c",
+        "android_client_info": {
+          "package_name": "com.example.plan_nutricional"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309114017397-re2harnj3k7u02eeti0d8da9nnvrugkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOOHxRK5AxjMCoFRXGfkABoIWcg36wF5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309114017397-re2harnj3k7u02eeti0d8da9nnvrugkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
