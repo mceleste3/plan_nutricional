@@ -11,12 +11,13 @@ class NutritionApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Nutritional Plain',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const Scaffold(
-          body: Text("Hola"),
-        ));
+      title: 'Nutritional Plain',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Scaffold(
+        body: Text("Hola"),
+      ),
+    );
   }
 }
