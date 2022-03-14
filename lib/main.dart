@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_nutricional/pantallas/perfil.dart';
 
 void main() {
   runApp(const NutritionApp());
@@ -10,14 +11,12 @@ class NutritionApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Nutritional Plain',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Scaffold(
-          body: Center(
-        child: Text("Hola"),
-      )),
-    );
+        title: 'Nutritional Plain',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const Scaffold(
+          body: Text("Hola"),
+        ));
   }
 }
