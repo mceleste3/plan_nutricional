@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plan_nutricional/pantallas/usuario.dart';
+import 'package:plan_nutricional/clases/usuario.dart';
 
 class Perfil extends StatelessWidget {
-  String _id = 'xWEDD9TJRiBiizMSSgbN';
-  late String _nombre;
+  String id = 'CKqi4OfuXeMHe41cyOug';
+  late String nombre;
 
   Perfil({Key? key}) : super(key: key);
 
@@ -12,7 +12,7 @@ class Perfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: usuarioSnapshots(_id),
+          stream: usuarioSnapshots(id),
           builder: (
             BuildContext context,
             AsyncSnapshot<DocumentSnapshot<Usuario>> snapshot,
@@ -22,16 +22,15 @@ class Perfil extends StatelessWidget {
             }
             final doc = snapshot.data!;
             var usuario = doc.data();
-            final docUsuario = FirebaseFirestore.instance
-                .collection("/usuarios")
-                .doc('xWEDD9TJRiBiizMSSgbN');
+            final docUsuario =
+                FirebaseFirestore.instance.collection("/usuarios").doc(id);
             if (usuario == null) {
-              return Center(
-                child: Text("hola usuario no existente"),
+              return const Center(
+                child: Text("El usuario no existente"),
               );
             }
             return Center(
-              child: Text("${usuario.nombre}"),
+              child: Text("Apellidos: ${usuario.apellidos}"),
             );
           }),
     );

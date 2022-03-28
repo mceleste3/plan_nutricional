@@ -1,19 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Usuario {
-  late List<String> perfil;
+  late int altura, edad, peso;
   late String nombre;
+  late String apellidos, sexo;
 
-  Usuario() {
-    perfil = [];
-    nombre = 'Juan';
-  }
+  Usuario(this.nombre);
 
   Usuario.fromFirestore(Map<String, dynamic> data)
-      : perfil = (data['perfil'] as List).cast<String>(),
-        nombre = data['nombre'];
+      : altura = data['altura'],
+        apellidos = data['apellidos'],
+        edad = data['edad'],
+        nombre = data['nombre'],
+        peso = data['peso'],
+        sexo = data['sexo'];
 
-  Map<String, dynamic> toFirestore() => {'perfil': perfil, 'nombre': nombre};
+  Map<String, dynamic> toFirestore() => {
+        'altura': altura,
+        'apellidos': apellidos,
+        'edad': edad,
+        'nombre': nombre,
+        'peso': peso,
+        'sexo': sexo,
+      };
 }
 
 Stream<DocumentSnapshot<Usuario>> usuarioSnapshots(String id) {
