@@ -5,27 +5,27 @@ import 'package:plan_nutricional/pantallas/pantalla_comidas1.dart';
 import 'firebase_options.dart';
 
 final comi1 = Comida.r('desayuno', 'Avena con leche de almendras', [
-  {'Avena': '30'},
-  {'Leche de almendras': '30 ml'}
+  Ingrediente('Avena', '30'),
+  Ingrediente('Leche de almendras', '30 ml'),
 ], [
-  {'huevo': '1'},
-  {'claras de huevo': '3'}
+  Ingrediente('huevo', '1'),
+  Ingrediente('claras de huevo', '3'),
 ], [
-  {'crema de cacahuete ': '1 cucharada'},
+  Ingrediente('crema de cacahuete', '1 cucharada'),
 ]);
 
 final comi2 = Comida.r(
   'almuerzo',
   'Pollo con arroz',
   [
-    {'Arroz': '50 g'},
-    {'ensalada': '40 g'}
+    Ingrediente('Arroz', '50 g'),
+    Ingrediente('ensalada', '40 g'),
   ],
   [
-    {'Pollo': '100 g'},
+    Ingrediente('Pollo', '100 g'),
   ],
   [
-    {'crema de cacahuete ': '1 cucharada'},
+    Ingrediente('crema de cacahuete ', '1 cucharada'),
   ],
 );
 

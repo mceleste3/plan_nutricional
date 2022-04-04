@@ -1,11 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class Ingrediente {
+  String nombre, cantidad;
+  Ingrediente(this.nombre, this.cantidad);
+
+  Ingrediente.fromFirestore(Map<String, dynamic> data)
+      : nombre = data['nombre'],
+        cantidad = data['cantidad'];
+}
+
 class Comida {
   String? id;
   late String nombre, tipo;
-  late List<Map<String, String>> carbohidrato;
-  late List<Map<String, String>> proteina;
-  late List<Map<String, String>> grasa;
+  late List<Ingrediente> carbohidrato;
+  late List<Ingrediente> proteina;
+  late List<Ingrediente> grasa;
 
   Comida(this.nombre);
 
@@ -24,10 +33,9 @@ class Comida {
       : id = _id,
         nombre = data['nombre'],
         tipo = data['tipo'],
-        carbohidrato =
-            (data['carbohidrato'] as List).cast<Map<String, String>>(),
-        proteina = (data['proteina'] as List).cast<Map<String, String>>(),
-        grasa = (data['grasa'] as List).cast<Map<String, String>>();
+        carbohidrato = _convierteIngredientes(data['carbohidrato'] as List),
+        proteina = _convierteIngredientes(data['proteina'] as List),
+        grasa = _convierteIngredientes(data['grasa'] as List);
 
   Map<String, dynamic> toFirestore() => {
         'tipo': tipo,
@@ -36,6 +44,13 @@ class Comida {
         'proteina': proteina,
         'grasa': grasa,
       };
+}
+
+List<Ingrediente> _convierteIngredientes(List list) {
+  return list
+      .map((item) => Ingrediente.fromFirestore(item))
+      .toList()
+      .cast<Ingrediente>();
 }
 
 Stream<QuerySnapshot<Map<String, dynamic>>> comidasSnapshots(
