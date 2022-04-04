@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
-import 'package:plan_nutricional/pantallas/pantalla_comidas1.dart';
+import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 import 'firebase_options.dart';
 
 final comi1 = Comida.r('desayuno', 'Avena con leche de almendras', [
@@ -69,9 +69,9 @@ class NutritionApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: PantallaComidas(
-        listaComida: listaComida,
-      ),
+      home: const PantallaComidas(
+          // listaComida: listaComida,
+          ),
       /*Scaffold(
         body: FutureBuilder(
           future: FirebaseFirestore.instance.doc("/usuarios/xWEDD9TJRiBiizMSSgbN").get(),

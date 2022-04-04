@@ -7,6 +7,9 @@ class Ingrediente {
   Ingrediente.fromFirestore(Map<String, dynamic> data)
       : nombre = data['nombre'],
         cantidad = data['cantidad'];
+
+  @override
+  String toString() => "$nombre ($cantidad)";
 }
 
 class Comida {
@@ -53,13 +56,19 @@ List<Ingrediente> _convierteIngredientes(List list) {
       .cast<Ingrediente>();
 }
 
-Stream<QuerySnapshot<Map<String, dynamic>>> comidasSnapshots(
-    String usuariosId) {
+Stream<List<Comida>> comidasSnapshots(
+  String usuariosId,
+) {
   final db = FirebaseFirestore.instance;
   return db
       .collection("/usuarios/$usuariosId/comidas")
-      .orderBy('orden')
-      .snapshots();
+      // .orderBy('orden')
+      .snapshots()
+      .map((querySnap) {
+    return querySnap.docs
+        .map((doc) => Comida.fromFirestore(doc.id, doc.data()))
+        .toList();
+  });
 }
 
 //Agregar una comida

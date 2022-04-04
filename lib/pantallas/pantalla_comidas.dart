@@ -4,7 +4,7 @@ import 'package:plan_nutricional/clases/usuario.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 
 class PantallaComidas extends StatelessWidget {
-  final String id = 'xWEDD9TJRiBiizMSSgbN';
+  final String id = 'CKqi4OfuXeMHe41cyOug';
 
   const PantallaComidas({Key? key}) : super(key: key);
 
@@ -33,30 +33,29 @@ class PantallaComidas extends StatelessWidget {
           }
           return StreamBuilder(
             stream: comidasSnapshots(id),
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
-            ) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
+              if (snapshot.hasError) {
+                return ErrorWidget(snapshot.error.toString());
+              }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-
-              final comidaSnaps = snapshot.data!.docs;
-              final comidas = comidaSnaps
-                  .map(
-                    (docSnap) =>
-                        Comida.fromFirestore(docSnap.id, docSnap.data()),
-                  )
-                  .toList();
+              final comidas = snapshot.data!;
               if (comidas.isEmpty) {
                 return const Center(
                   child: Text("No hay comidas"),
                 );
               }
-              return Column(
-                children: [
-                  Text('${comidas[0].nombre}))'),
-                ],
+              return ListView.builder(
+                itemCount: comidas.length,
+                itemBuilder: (context, index) {
+                  final comida = comidas[index];
+                  return ListTile(
+                    title: Text(comida.nombre),
+                    subtitle: Text(comida.grasa.join(", ")),
+                  );
+                },
               );
             },
           );
