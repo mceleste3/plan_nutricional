@@ -4,9 +4,9 @@ import 'package:plan_nutricional/clases/usuario.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 
 class PantallaComidas extends StatelessWidget {
-  String id = 'xWEDD9TJRiBiizMSSgbN';
+  final String id = 'xWEDD9TJRiBiizMSSgbN';
 
-  PantallaComidas({Key? key}) : super(key: key);
+  const PantallaComidas({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,6 @@ class PantallaComidas extends StatelessWidget {
           }
           final doc = snapshot.data!;
           var usuario = doc.data();
-          final docUsuario =
-              FirebaseFirestore.instance.collection("/usuarios").doc(id);
           if (usuario == null) {
             return const Center(
               child: Text("El usuario no existente"),

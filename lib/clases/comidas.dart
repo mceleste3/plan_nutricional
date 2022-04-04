@@ -12,14 +12,13 @@ class Comida {
   //Comida(
   //    {this.tipo, this.nombre, this.carbohidrato, this.proteina, this.grasa});
 
-  Comida.r(String tipo, String nombre, List<Map<String, String>> carbohidrato,
-      List<Map<String, String>> proteina, List<Map<String, String>> grasa) {
-    this.tipo = tipo;
-    this.nombre = nombre;
-    this.carbohidrato = carbohidrato;
-    this.proteina = proteina;
-    this.grasa = grasa;
-  }
+  Comida.r(
+    this.tipo,
+    this.nombre,
+    this.carbohidrato,
+    this.proteina,
+    this.grasa,
+  );
 
   Comida.fromFirestore(String _id, Map<String, dynamic> data)
       : id = _id,

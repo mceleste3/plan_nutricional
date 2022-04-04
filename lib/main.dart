@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas1.dart';
-import 'package:plan_nutricional/pantallas/perfil.dart';
 import 'firebase_options.dart';
 
 final comi1 = Comida.r('desayuno', 'Avena con leche de almendras', [

@@ -3,9 +3,9 @@ import 'package:plan_nutricional/clases/comidas.dart';
 import 'package:plan_nutricional/pantallas/barra_navegacion.dart';
 
 class PantallaComidas extends StatelessWidget {
-  late List<Comida> listaComida;
+  final List<Comida> listaComida;
 
-  PantallaComidas({
+  const PantallaComidas({
     Key? key,
     required this.listaComida,
   }) : super(key: key);
