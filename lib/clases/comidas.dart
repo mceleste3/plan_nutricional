@@ -7,7 +7,6 @@ class Ingrediente {
   Ingrediente.fromFirestore(Map<String, dynamic> data)
       : nombre = data['nombre'],
         cantidad = data['cantidad'];
-
   @override
   String toString() => "$nombre ($cantidad)";
 }
@@ -20,9 +19,6 @@ class Comida {
   late List<Ingrediente> grasa;
 
   Comida(this.nombre);
-
-  //Comida(
-  //    {this.tipo, this.nombre, this.carbohidrato, this.proteina, this.grasa});
 
   Comida.r(
     this.tipo,
@@ -62,7 +58,6 @@ Stream<List<Comida>> comidasSnapshots(
   final db = FirebaseFirestore.instance;
   return db
       .collection("/usuarios/$usuariosId/comidas")
-      // .orderBy('orden')
       .snapshots()
       .map((querySnap) {
     return querySnap.docs

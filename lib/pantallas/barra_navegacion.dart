@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 
 class BarraNavegacion extends StatefulWidget {
   const BarraNavegacion({Key? key}) : super(key: key);
@@ -8,6 +9,31 @@ class BarraNavegacion extends StatefulWidget {
 
 class _BarraNavegacionState extends State<BarraNavegacion> {
   late int _paginaActual;
+  static final List<String> titulos = [
+    'Comidas',
+    'Calendario',
+    'Inicio',
+    'Stock',
+    'Perfil'
+  ];
+  PageController pageController = PageController();
+  /*static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
+  static final List<Widget> _widgetOptions = <Widget>[
+    const PantallaComidas(),
+    Container(
+      color: Colors.white,
+    ),
+    Container(
+      color: Colors.white,
+    ),
+    Container(
+      color: Colors.white,
+    ),
+    Container(
+      color: Colors.white,
+    ),
+  ];
   @override
   void initState() {
     _paginaActual = 2;
@@ -16,7 +42,16 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
+    return Scaffold(
+      appBar: AppBar(
+          title: Center(
+        child: Text(
+          "${titulos.elementAt(_paginaActual)}",
+          style: const TextStyle(),
+        ),
+      )),
+      body: _widgetOptions.elementAt(_paginaActual),
+      bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           setState(() {
@@ -47,6 +82,8 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
             icon: Icon(Icons.person_rounded),
             label: 'Perfil',
           ),
-        ]);
+        ],
+      ),
+    );
   }
 }
