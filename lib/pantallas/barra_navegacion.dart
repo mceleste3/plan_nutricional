@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
+import 'package:plan_nutricional/pantallas/perfil.dart';
 
 class BarraNavegacion extends StatefulWidget {
   const BarraNavegacion({Key? key}) : super(key: key);
@@ -30,9 +31,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     Container(
       color: Colors.white,
     ),
-    Container(
-      color: Colors.white,
-    ),
+    const Perfil(),
   ];
   @override
   void initState() {
