@@ -37,6 +37,7 @@ class PantallaComidas extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               final comidas = snapshot.data!;
+
               if (comidas.isEmpty) {
                 return const Center(
                   child: Text("No hay comidas"),
@@ -71,7 +72,20 @@ class PantallaComidas extends StatelessWidget {
                                   Expanded(
                                     flex: 1,
                                     child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          final docComidas = FirebaseFirestore
+                                              .instance
+                                              .collection(
+                                                  "/usuarios/$id/comidas")
+                                              .doc(comidas[index].id);
+                                          List<dynamic> infoComidas = [
+                                            comidas[0],
+                                            docComidas
+                                          ];
+                                          Navigator.of(context).pushNamed(
+                                              '/editar',
+                                              arguments: infoComidas);
+                                        },
                                         child: const Icon(Icons.edit),
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

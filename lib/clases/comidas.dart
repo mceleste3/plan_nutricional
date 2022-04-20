@@ -7,6 +7,7 @@ class Ingrediente {
   Ingrediente.fromFirestore(Map<String, dynamic> data)
       : nombre = data['nombre'],
         cantidad = data['cantidad'];
+
   @override
   String toString() => "$nombre ($cantidad)";
 }
@@ -39,9 +40,9 @@ class Comida {
   Map<String, dynamic> toFirestore() => {
         'tipo': tipo,
         'nombre': nombre,
-        'carbohidrato': carbohidrato,
-        'proteina': proteina,
-        'grasa': grasa,
+        'carbohidrato': _ingredientestoFirestore(carbohidrato),
+        'proteina': _ingredientestoFirestore(proteina),
+        'grasa': _ingredientestoFirestore(grasa),
       };
 }
 
@@ -50,6 +51,16 @@ List<Ingrediente> _convierteIngredientes(List list) {
       .map((item) => Ingrediente.fromFirestore(item))
       .toList()
       .cast<Ingrediente>();
+}
+
+List<Map<String, String>> _ingredientestoFirestore(List<Ingrediente> list) {
+  List<Map<String, String>> l = [];
+  Map<String, String> ingrediente;
+  for (int i = 0; i < list.length; i++) {
+    ingrediente = {'nombre': list[i].nombre, 'cantidad': list[i].cantidad};
+    l.add(ingrediente);
+  }
+  return l;
 }
 
 Stream<List<Comida>> comidasSnapshots(

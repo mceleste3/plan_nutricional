@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 import 'package:plan_nutricional/pantallas/barra_navegacion.dart';
 import 'package:plan_nutricional/pantallas/add_comida.dart';
+import 'package:plan_nutricional/pantallas/editar_comida.dart';
 import 'firebase_options.dart';
 
 final comi1 = Comida.r('desayuno', 'Avena con leche de almendras', [
@@ -90,6 +91,7 @@ class NutritionApp extends StatelessWidget {
       ),*/
       routes: {
         '/agregar': (context) => const AddComida(),
+        '/editar': (context) => const EditarComida(),
       },
     );
   }
