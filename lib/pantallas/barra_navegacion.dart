@@ -10,13 +10,7 @@ class BarraNavegacion extends StatefulWidget {
 
 class _BarraNavegacionState extends State<BarraNavegacion> {
   late int _paginaActual;
-  static final List<String> titulos = [
-    'Comidas',
-    'Calendario',
-    'Inicio',
-    'Stock',
-    'Perfil'
-  ];
+  static final List<String> titulos = ['Comidas', 'Calendario', 'Inicio', 'Stock', 'Perfil'];
   PageController pageController = PageController();
   /*static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
@@ -43,12 +37,13 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Center(
-        child: Text(
-          "${titulos.elementAt(_paginaActual)}",
-          style: const TextStyle(),
+        title: Center(
+          child: Text(
+            "${titulos.elementAt(_paginaActual)}",
+            style: const TextStyle(),
+          ),
         ),
-      )),
+      ),
       body: _widgetOptions.elementAt(_paginaActual),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
