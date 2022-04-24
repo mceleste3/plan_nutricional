@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_nutricional/pantallas/inicio.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 import 'package:plan_nutricional/pantallas/perfil.dart';
 
@@ -10,7 +11,13 @@ class BarraNavegacion extends StatefulWidget {
 
 class _BarraNavegacionState extends State<BarraNavegacion> {
   late int _paginaActual;
-  static final List<String> titulos = ['Comidas', 'Calendario', 'Inicio', 'Stock', 'Perfil'];
+  static final List<String> titulos = [
+    'Comidas',
+    'Calendario',
+    'Inicio',
+    'Stock',
+    'Perfil'
+  ];
   PageController pageController = PageController();
   /*static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
@@ -19,9 +26,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     Container(
       color: Colors.white,
     ),
-    Container(
-      color: Colors.white,
-    ),
+    const Inicio(),
     Container(
       color: Colors.white,
     ),

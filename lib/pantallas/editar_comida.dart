@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
-import 'package:plan_nutricional/pantallas/add_comida.dart';
 
 class EditarComida extends StatefulWidget {
   const EditarComida({Key? key}) : super(key: key);
@@ -57,13 +56,12 @@ class _EditarComidaState extends State<EditarComida> {
                 fontSize: 16,
               ),
             ),
-            /*for( int i = 0; i<_arguments[0].carbohidrato.length; i++){}*/
             Desplegable(
               comida: _arguments[0],
               doc: _arguments[1],
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             const Text(
               'Nombre del plato',
@@ -87,15 +85,21 @@ class _EditarComidaState extends State<EditarComida> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             Columna(
               nombre: 'Carbohidrato',
               comida: _arguments[0],
               doc: _arguments[1],
             ),
+            const SizedBox(
+              height: 10,
+            ),
             Columna(
                 nombre: 'Proteína', comida: _arguments[0], doc: _arguments[1]),
+            const SizedBox(
+              height: 10,
+            ),
             Columna(nombre: 'Grasa', comida: _arguments[0], doc: _arguments[1]),
             Padding(
               padding: const EdgeInsets.only(left: 200, top: 40),
@@ -134,14 +138,59 @@ class Columna extends StatefulWidget {
 }
 
 class _ColumnaState extends State<Columna> {
-  late TextEditingController _controller;
+  final TextEditingController _nombre = TextEditingController(),
+      _cantidad = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(
-      text: "",
-    );
+  int length(String nom) {
+    int i = 0;
+    if (nom == 'Carbohidrato') {
+      i = widget.comida.carbohidrato.length;
+    }
+    if (nom == 'Proteína') {
+      i = widget.comida.proteina.length;
+    }
+    if (nom == 'Grasa') {
+      i = widget.comida.grasa.length;
+    }
+    return i;
+  }
+
+  Ingrediente macronutriente(String nom, int index) {
+    Ingrediente c = widget.comida.carbohidrato[0];
+    if (nom == 'Carbohidrato') {
+      c = widget.comida.carbohidrato[index];
+    }
+    if (nom == 'Proteína') {
+      c = widget.comida.proteina[index];
+    }
+    if (nom == 'Grasa') {
+      c = widget.comida.grasa[index];
+    }
+    return c;
+  }
+
+  Future<void> cambioCantidad(int index, String nom, String cantidad) async {
+    if (nom == 'Carbohidrato') {
+      widget.comida.carbohidrato[index].cantidad = cantidad;
+    }
+    if (nom == 'Proteína') {
+      widget.comida.proteina[index].cantidad = cantidad;
+    }
+    if (nom == 'Grasa') {
+      widget.comida.grasa[index].cantidad = cantidad;
+    }
+  }
+
+  Future<void> cambioNombre(int index, String nom, String cantidad) async {
+    if (nom == 'Carbohidrato') {
+      widget.comida.carbohidrato[index].nombre = cantidad;
+    }
+    if (nom == 'Proteína') {
+      widget.comida.proteina[index].nombre = cantidad;
+    }
+    if (nom == 'Grasa') {
+      widget.comida.grasa[index].nombre = cantidad;
+    }
   }
 
   @override
@@ -164,9 +213,9 @@ class _ColumnaState extends State<Columna> {
         ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: widget.comida.grasa.length,
+            itemCount: length(widget.nombre),
             itemBuilder: (context, index) {
-              final carbo = widget.comida.grasa[index];
+              Ingrediente i = macronutriente(widget.nombre, index);
               return Column(
                 children: [
                   const SizedBox(
@@ -179,8 +228,14 @@ class _ColumnaState extends State<Columna> {
                         width: 100,
                         height: 40,
                         child: TextField(
+                          controller: _nombre,
+                          onChanged: (dynamic _nombre) {
+                            setState(() {
+                              cambioNombre(index, widget.nombre, _nombre);
+                            });
+                          },
                           decoration: InputDecoration(
-                            hintText: carbo.nombre,
+                            hintText: i.nombre,
                             border: const OutlineInputBorder(),
                           ),
                         ),
@@ -189,11 +244,17 @@ class _ColumnaState extends State<Columna> {
                         width: 30,
                       ),
                       SizedBox(
-                        width: 70,
+                        width: 90,
                         height: 40,
                         child: TextField(
+                          controller: _cantidad,
+                          onChanged: (dynamic _cantidad) {
+                            setState(() {
+                              cambioCantidad(index, widget.nombre, _cantidad);
+                            });
+                          },
                           decoration: InputDecoration(
-                            hintText: carbo.cantidad,
+                            hintText: i.cantidad,
                             border: const OutlineInputBorder(),
                           ),
                         ),
@@ -244,7 +305,7 @@ class _DesplegableState extends State<Desplegable> {
           widget.comida.tipo = newValue.toLowerCase();
         });
       },
-      items: <String>['DESAYUNO', 'SNACK', 'ALAMUERZO', 'MERIENDA', 'CENA']
+      items: <String>['DESAYUNO', 'SNACK', 'ALMUERZO', 'MERIENDA', 'CENA']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

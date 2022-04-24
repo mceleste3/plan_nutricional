@@ -20,7 +20,7 @@ class _PerfilState extends State<Perfil> {
 
     const TextStyle titleStyle = TextStyle(
       fontSize: 15,
-      fontWeight: FontWeight.bold, //mirar si hay padding
+      fontWeight: FontWeight.bold,
     );
     return Scaffold(
       body: StreamBuilder(
@@ -37,7 +37,8 @@ class _PerfilState extends State<Perfil> {
           }
           final doc = snapshot.data!;
           var usuario = doc.data();
-          final docUsuario = FirebaseFirestore.instance.collection("/usuarios").doc(id);
+          final docUsuario =
+              FirebaseFirestore.instance.collection("/usuarios").doc(id);
           if (usuario == null) {
             return const Center(
               child: Text("El usuario no existente"),
@@ -52,13 +53,13 @@ class _PerfilState extends State<Perfil> {
                 children: [
                   Center(child: Text(user.email ?? "<no email>")),
                   const SizedBox(height: 20),
-                  ElevatedButton(
+                  /*ElevatedButton(
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                     },
                     child: const Text("Logout"),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 20),*/
                   const Padding(
                     padding: EdgeInsets.only(left: 23),
                     child: Text(
@@ -178,7 +179,9 @@ class _PerfilState extends State<Perfil> {
 }
 
 class Casilla extends StatefulWidget {
-  const Casilla({Key? key, required this.user, required this.doc, required this.i}) : super(key: key);
+  const Casilla(
+      {Key? key, required this.user, required this.doc, required this.i})
+      : super(key: key);
   final Usuario user;
   final dynamic doc;
   final dynamic i;
@@ -289,7 +292,9 @@ class _CasillaState extends State<Casilla> {
               width: 200,
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                boxShadow: const [BoxShadow(blurRadius: 2, color: Colors.black38)],
+                boxShadow: const [
+                  BoxShadow(blurRadius: 2, color: Colors.black38)
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 10, left: 6),
@@ -320,7 +325,8 @@ class _CasillaState extends State<Casilla> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              _aceptarPulsado(widget.user, widget.doc, widget.i);
+                              _aceptarPulsado(
+                                  widget.user, widget.doc, widget.i);
                             },
                             child: const Text(
                               "Aceptar",
