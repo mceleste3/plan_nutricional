@@ -27,9 +27,8 @@ class PantallaComidas extends StatelessWidget {
             );
           }
           return StreamBuilder(
-            stream: comidasSnapshots(id),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
+            stream: comidaListSnapshots(id),
+            builder: (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
               if (snapshot.hasError) {
                 return ErrorWidget(snapshot.error.toString());
               }
@@ -55,8 +54,7 @@ class PantallaComidas extends StatelessWidget {
                           itemCount: comidas.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 6, left: 2, top: 2),
+                              padding: const EdgeInsets.only(bottom: 6, left: 2, top: 2),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -73,27 +71,17 @@ class PantallaComidas extends StatelessWidget {
                                     flex: 1,
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          final docComidas = FirebaseFirestore
-                                              .instance
-                                              .collection(
-                                                  "/usuarios/$id/comidas")
-                                              .doc(comidas[index].id);
-                                          List<dynamic> infoComidas = [
-                                            comidas[0],
-                                            docComidas
-                                          ];
                                           Navigator.of(context).pushNamed(
-                                              '/editar',
-                                              arguments: infoComidas);
+                                            '/editar',
+                                            arguments: [id, comidas[index].id],
+                                          );
                                         },
                                         child: const Icon(Icons.edit),
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
+                                              borderRadius: BorderRadius.circular(15),
                                             ),
-                                            padding:
-                                                const EdgeInsets.only(right: 1))
+                                            padding: const EdgeInsets.only(right: 1))
                                         // backgroundColor: Colors.white,
                                         ),
                                   ),
@@ -104,11 +92,9 @@ class PantallaComidas extends StatelessWidget {
                                     flex: 1,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        padding:
-                                            const EdgeInsets.only(right: 1),
+                                        padding: const EdgeInsets.only(right: 1),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
+                                          borderRadius: BorderRadius.circular(15),
                                         ),
                                       ),
                                       onPressed: () {
@@ -116,29 +102,23 @@ class PantallaComidas extends StatelessWidget {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              backgroundColor:
-                                                  const Color(0xFF515151),
+                                              backgroundColor: const Color(0xFF515151),
                                               content: const Text(
                                                 "Seguro que quieres eliminar esta comida de la lista?",
-                                                style: TextStyle(
-                                                    color: Colors.white70),
+                                                style: TextStyle(color: Colors.white70),
                                               ),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            "/usuarios/$id/comidas/${comidas[index].id}")
+                                                        .doc("/usuarios/$id/comidas/${comidas[index].id}")
                                                         .delete();
-                                                    Navigator.pop(
-                                                        context, true);
+                                                    Navigator.pop(context, true);
                                                   },
                                                   child: const Text("Aceptar"),
                                                 ),
                                                 TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          context, false),
+                                                  onPressed: () => Navigator.pop(context, false),
                                                   child: const Text("Cancelar"),
                                                 )
                                               ],
@@ -203,12 +183,9 @@ class ComidaWidget extends StatelessWidget {
 
   final List<Comida> listaComida;
   final int index;
-  static const TextStyle titleStyle =
-      TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14);
-  static const TextStyle subtitleStyle = TextStyle(
-      color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 13);
-  static const TextStyle ingredientStyle =
-      TextStyle(color: Colors.black, fontSize: 13);
+  static const TextStyle titleStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14);
+  static const TextStyle subtitleStyle = TextStyle(color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 13);
+  static const TextStyle ingredientStyle = TextStyle(color: Colors.black, fontSize: 13);
 
   @override
   Widget build(BuildContext context) {
@@ -234,8 +211,7 @@ class ComidaWidget extends StatelessWidget {
             "${listaComida[index].tipo.toUpperCase()}",
             style: subtitleStyle,
           ),
-          Text("Carbohidrato: ${listaComida[index].carbohidrato.join(", ")}",
-              style: ingredientStyle),
+          Text("Carbohidrato: ${listaComida[index].carbohidrato.join(", ")}", style: ingredientStyle),
           Text(
             "Proteína: ${listaComida[index].proteina.join(", ")}",
             style: ingredientStyle,
