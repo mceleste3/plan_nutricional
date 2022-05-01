@@ -21,7 +21,8 @@ class _EditarComidaState extends State<EditarComida> {
   @override
   void didChangeDependencies() {
     if (ModalRoute.of(context) != null) {
-      final arguments = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+      final arguments =
+          ModalRoute.of(context)!.settings.arguments as List<dynamic>;
       usuarioId = arguments[0];
       comidaId = arguments[1];
     }
@@ -114,7 +115,8 @@ class _EditarComidaState extends State<EditarComida> {
                       'Guardar',
                       style: TextStyle(fontSize: 16),
                     ),
-                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(15)),
                   ),
                 ),
                 const SizedBox(height: 10)
@@ -144,62 +146,6 @@ class Columna extends StatefulWidget {
 }
 
 class _ColumnaState extends State<Columna> {
-  /*
-
-  int length(String nom) {
-    int i = 0;
-    if (nom == 'Carbohidrato') {
-      i = widget.comida.carbohidrato.length;
-    }
-    if (nom == 'Proteína') {
-      i = widget.comida.proteina.length;
-    }
-    if (nom == 'Grasa') {
-      i = widget.comida.grasa.length;
-    }
-    return i;
-  }
-
-  Ingrediente macronutriente(String nom, int index) {
-    Ingrediente c = widget.comida.carbohidrato[0];
-    if (nom == 'Carbohidrato') {
-      c = widget.comida.carbohidrato[index];
-    }
-    if (nom == 'Proteína') {
-      c = widget.comida.proteina[index];
-    }
-    if (nom == 'Grasa') {
-      c = widget.comida.grasa[index];
-    }
-    return c;
-  }
-
-  Future<void> cambioCantidad(int index, String nom, String cantidad) async {
-    if (nom == 'Carbohidrato') {
-      widget.comida.carbohidrato[index].cantidad = cantidad;
-    }
-    if (nom == 'Proteína') {
-      widget.comida.proteina[index].cantidad = cantidad;
-    }
-    if (nom == 'Grasa') {
-      widget.comida.grasa[index].cantidad = cantidad;
-    }
-  }
-
-  Future<void> cambioNombre(int index, String nom, String cantidad) async {
-    if (nom == 'Carbohidrato') {
-      widget.comida.carbohidrato[index].nombre = cantidad;
-    }
-    if (nom == 'Proteína') {
-      widget.comida.proteina[index].nombre = cantidad;
-    }
-    if (nom == 'Grasa') {
-      widget.comida.grasa[index].nombre = cantidad;
-    }
-  }
-
-  */
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -211,10 +157,12 @@ class _ColumnaState extends State<Columna> {
         ),
         const SizedBox(height: 10),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text("Nombre"),
-            SizedBox(width: 80),
+            Padding(
+              padding: EdgeInsets.only(left: 90),
+              child: Text("Nombre"),
+            ),
+            SizedBox(width: 125),
             Text("Cantidad"),
           ],
         ),
@@ -318,7 +266,6 @@ class _EditorCasillasState extends State<EditorCasillas> {
         ),
       ],
     );
-    ;
   }
 }
 
@@ -346,6 +293,7 @@ class _DesplegableState extends State<Desplegable> {
 
   @override
   Widget build(BuildContext context) {
+    widget.comida.tipo = dropdownValue;
     return DropdownButton<String>(
       value: dropdownValue,
       borderRadius: BorderRadius.circular(10),
@@ -359,8 +307,8 @@ class _DesplegableState extends State<Desplegable> {
           widget.actualiza();
         });
       },
-      items:
-          <String>['DESAYUNO', 'SNACK', 'ALMUERZO', 'MERIENDA', 'CENA'].map<DropdownMenuItem<String>>((String value) {
+      items: <String>['DESAYUNO', 'SNACK', 'ALMUERZO', 'MERIENDA', 'CENA']
+          .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

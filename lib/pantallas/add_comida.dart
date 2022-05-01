@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 
@@ -24,23 +23,22 @@ class _AddComidaState extends State<AddComida> {
     super.dispose();
   }
 
-  Future<void> _guardarPulsado() async {
-    final c = Comida.r(
-      '',
-      _nombre.text,
-      [Ingrediente('', ''), Ingrediente('', '')],
-      [Ingrediente('', ''), Ingrediente('', '')],
-      [Ingrediente('', ''), Ingrediente('', '')],
-    );
-    final docSnap = FirebaseFirestore.instance
-        .collection('/usuarios')
-        .doc('CKqi4OfuXeMHe41cyOug');
-    addComida('CKqi4OfuXeMHe41cyOug', c);
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
+    Comida comida = Comida.r(
+      '',
+      '',
+      [],
+      [],
+      [],
+    );
+
+    Future<void> _guardarPulsado(Comida c) async {
+      c.nombre = _nombre.text;
+      addComida('CKqi4OfuXeMHe41cyOug', c);
+      Navigator.of(context).pop();
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Añadir comida')),
       body: Center(
@@ -57,7 +55,7 @@ class _AddComidaState extends State<AddComida> {
                     fontSize: 16,
                   ),
                 ),
-                const Desplegable(),
+                Desplegable(comida: comida),
                 const SizedBox(
                   height: 10,
                 ),
@@ -84,16 +82,26 @@ class _AddComidaState extends State<AddComida> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Casilla(
-                  nutriente: 'Carbohidrato',
+                Columna(
+                  nombre: 'Carbohidrato',
+                  listaIngredientes: comida.carbohidrato,
+                  comida: comida,
                 ),
-                const Casilla(nutriente: 'Proteína'),
-                const Casilla(nutriente: 'Grasa'),
+                Columna(
+                  nombre: 'Proteína',
+                  listaIngredientes: comida.proteina,
+                  comida: comida,
+                ),
+                Columna(
+                  nombre: 'Grasa',
+                  listaIngredientes: comida.grasa,
+                  comida: comida,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 200, top: 40),
                   child: ElevatedButton(
                     onPressed: () {
-                      _guardarPulsado();
+                      _guardarPulsado(comida);
                     },
                     child: const Text(
                       'Guardar',
@@ -112,99 +120,163 @@ class _AddComidaState extends State<AddComida> {
   }
 }
 
-class Casilla extends StatelessWidget {
-  final String nutriente;
-  const Casilla({Key? key, required this.nutriente}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '$nutriente',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            ElevatedButton(
-                onPressed: () {},
-                child: const Icon(Icons.add),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  minimumSize: const Size(50, 33),
-                )),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Columna(
-                nombre: 'Nombre',
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Columna(nombre: 'Cantidad')
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class Columna extends StatefulWidget {
+  const Columna({
+    Key? key,
+    required this.nombre,
+    required this.listaIngredientes,
+    required this.comida,
+  }) : super(key: key);
+
   final String nombre;
-  const Columna({Key? key, required this.nombre}) : super(key: key);
+  final List<Ingrediente> listaIngredientes;
+  final Comida comida;
 
   @override
   State<Columna> createState() => _ColumnaState();
 }
 
 class _ColumnaState extends State<Columna> {
-  late TextEditingController _controller;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.nombre,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() {
+                widget.listaIngredientes.add(Ingrediente('', ''));
+              }),
+              child: const Icon(Icons.add),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                minimumSize: const Size(50, 33),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() {
+                widget.listaIngredientes.removeLast();
+              }),
+              child: const Icon(Icons.remove),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                minimumSize: const Size(50, 33),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: const [
+            Padding(
+              padding: EdgeInsets.only(left: 90),
+              child: Text("Nombre"),
+            ),
+            SizedBox(width: 125),
+            Text("Cantidad"),
+          ],
+        ),
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: widget.listaIngredientes.length,
+          itemBuilder: (context, index) {
+            return EditorCasillas(
+              ingrediente: widget.listaIngredientes[index],
+            );
+          },
+        ),
+        const SizedBox(height: 10)
+      ],
+    );
+  }
+}
+
+class EditorCasillas extends StatefulWidget {
+  const EditorCasillas({Key? key, required this.ingrediente}) : super(key: key);
+
+  final Ingrediente ingrediente;
+
+  @override
+  State<EditorCasillas> createState() => _EditorCasillasState();
+}
+
+class _EditorCasillasState extends State<EditorCasillas> {
+  late TextEditingController _nombre;
+  late TextEditingController _cantidad;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(
-      text: "",
-    );
+    _nombre = TextEditingController();
+    _cantidad = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nombre.dispose();
+    _cantidad.dispose();
+    super.dispose();
+  }
+
+  void cambioNombre(String nombre) {
+    // Este cambio afecta al objeto comida, realmente...
+    widget.ingrediente.nombre = nombre;
+  }
+
+  void cambioCantidad(String cantidad) {
+    // Este cambio afecta al objeto comida, realmente...
+    widget.ingrediente.cantidad = cantidad;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          "${widget.nombre}",
-          style: const TextStyle(
-            fontSize: 15,
-          ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        SizedBox(
-          width: 130,
-          height: 40,
-          child: TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 200,
+              height: 40,
+              child: TextField(
+                controller: _nombre,
+                onChanged: cambioNombre,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(width: 30),
+            SizedBox(
+              width: 90,
+              height: 40,
+              child: TextField(
+                controller: _cantidad,
+                onChanged: cambioCantidad,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -212,10 +284,14 @@ class _ColumnaState extends State<Columna> {
 }
 
 class Desplegable extends StatefulWidget {
-  const Desplegable({Key? key}) : super(key: key);
+  const Desplegable({
+    Key? key,
+    required this.comida,
+  }) : super(key: key);
 
   @override
   State<Desplegable> createState() => _DesplegableState();
+  final Comida comida;
 }
 
 class _DesplegableState extends State<Desplegable> {
@@ -223,6 +299,7 @@ class _DesplegableState extends State<Desplegable> {
 
   @override
   Widget build(BuildContext context) {
+    widget.comida.tipo = dropdownValue;
     return DropdownButton<String>(
       value: dropdownValue,
       borderRadius: BorderRadius.circular(10),
@@ -232,6 +309,7 @@ class _DesplegableState extends State<Desplegable> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+          widget.comida.tipo = newValue.toLowerCase();
         });
       },
       items: <String>['Desayuno', 'Snack', 'Almuerzo', 'Merienda', 'Cena']
