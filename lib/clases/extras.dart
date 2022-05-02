@@ -1,41 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Extra {
-  late String id;
-  late String nombre, cantidad, repeticion;
-  // late List<String> horas;
-  // late List<String> dias;
+  String? id;
+  String nombre, cantidad, repeticion;
+  List<num>? horas;
+  List<DateTime>? dias;
 
-  Extra(this.nombre, this.cantidad);
+  Extra.horas(this.nombre, this.cantidad, this.repeticion, this.horas);
+  Extra.dias(this.nombre, this.cantidad, this.repeticion, this.dias);
 
   Extra.fromfirestore(String _id, Map<String, dynamic> data)
       : id = _id,
         nombre = data['nombre'],
         cantidad = data['cantidad'],
-        repeticion = data['repeticion'];
-  //     horas = (data['horas'] as List).cast<String>(),
-  //   dias = (data['dias'] as List).cast<String>();
+        repeticion = data['repeticion'] {
+    if (data.containsKey('horas')) {
+      horas = (data['horas'] as List).cast<num>();
+    } else if (data.containsKey('dias')) {
+      dias = (data['dias'] as List).map((ts) => ts.toDate()).cast<DateTime>().toList();
+    }
+    // Comprobar que uno de los dos tiene algo??
+  }
 
-  Map<String, dynamic> toFirestore() => {
-        'cantidad': cantidad,
-        'nombre': nombre,
-        'repeticion': repeticion,
-        // 'horas': horas,
-        // 'dias': dias,
-      };
+  Map<String, dynamic> toFirestore() {
+    final datos = <String, dynamic>{
+      'cantidad': cantidad,
+      'nombre': nombre,
+      'repeticion': repeticion,
+    };
+    if (horas != null) {
+      datos['horas'] = horas;
+    }
+    if (dias != null) {
+      datos['dias'] = dias;
+    }
+    return datos;
+  }
 }
 
-Stream<List<Extra>> extraListSnapshots(
-  String usuarioId,
-) {
+Stream<List<Extra>> extraListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
-  return db
-      .collection("/usuarios/$usuarioId/extras")
-      .snapshots()
-      .map((querySnap) {
-    return querySnap.docs
-        .map((doc) => Extra.fromfirestore(doc.id, doc.data()))
-        .toList();
+  return db.collection("/usuarios/$usuarioId/extras").snapshots().map((querySnap) {
+    return querySnap.docs.map((doc) => Extra.fromfirestore(doc.id, doc.data())).toList();
   });
 }
 
@@ -47,11 +53,10 @@ Stream<Extra> extraSnapshots(String usuarioId, String extraId) {
 }
 
 //añadir un extra
-Future<void> addExtra(String idUsuario, Extra e) async {
+Future<void> addExtra(String idUsuario, Extra extra) async {
   final db = FirebaseFirestore.instance;
-  final doc =
-      await db.collection("/usuarios/$idUsuario/extras").add(e.toFirestore());
-  e.id = doc.id;
+  final doc = await db.collection("/usuarios/$idUsuario/extras").add(extra.toFirestore());
+  extra.id = doc.id;
 }
 
 //editar extra
