@@ -305,56 +305,55 @@ class _CasillaState extends State<Casilla> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  showDialog<bool>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: const Color(0xFF515151),
-                        content: TextField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _controller,
-                          decoration: InputDecoration(
-                            hintStyle: const TextStyle(color: Colors.white60),
-                            hintText: datos(widget.i, widget.user),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white70),
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: const Color(0xFF515151),
+                      content: TextField(
+                        style: const TextStyle(color: Colors.white),
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(color: Colors.white60),
+                          hintText: datos(widget.i, widget.user),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            _aceptarPulsado(widget.user, widget.doc, widget.i);
+                          },
+                          child: const Text(
+                            "Aceptar",
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              _aceptarPulsado(
-                                  widget.user, widget.doc, widget.i);
-                            },
-                            child: const Text(
-                              "Aceptar",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text(
+                            "Cancelar",
+                            style: TextStyle(color: Colors.white),
                           ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text(
-                              "Cancelar",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: const Icon(Icons.edit),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                )
-                // backgroundColor: Colors.white,
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Icon(Icons.edit),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                minimumSize: const Size(50, 33),
+              ),
+            ),
           ],
         ),
         const SizedBox(

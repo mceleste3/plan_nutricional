@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Extra {
   String? id;
-  String nombre, cantidad, repeticion;
+  String nombre, cantidad;
+  String? repeticion;
   List<num>? horas;
   List<DateTime>? dias;
 
+  Extra(this.nombre, this.cantidad);
   Extra.horas(this.nombre, this.cantidad, this.repeticion, this.horas);
   Extra.dias(this.nombre, this.cantidad, this.repeticion, this.dias);
 
@@ -17,7 +19,10 @@ class Extra {
     if (data.containsKey('horas')) {
       horas = (data['horas'] as List).cast<num>();
     } else if (data.containsKey('dias')) {
-      dias = (data['dias'] as List).map((ts) => ts.toDate()).cast<DateTime>().toList();
+      dias = (data['dias'] as List)
+          .map((ts) => ts.toDate())
+          .cast<DateTime>()
+          .toList();
     }
     // Comprobar que uno de los dos tiene algo??
   }
@@ -40,8 +45,13 @@ class Extra {
 
 Stream<List<Extra>> extraListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
-  return db.collection("/usuarios/$usuarioId/extras").snapshots().map((querySnap) {
-    return querySnap.docs.map((doc) => Extra.fromfirestore(doc.id, doc.data())).toList();
+  return db
+      .collection("/usuarios/$usuarioId/extras")
+      .snapshots()
+      .map((querySnap) {
+    return querySnap.docs
+        .map((doc) => Extra.fromfirestore(doc.id, doc.data()))
+        .toList();
   });
 }
 
@@ -55,7 +65,9 @@ Stream<Extra> extraSnapshots(String usuarioId, String extraId) {
 //añadir un extra
 Future<void> addExtra(String idUsuario, Extra extra) async {
   final db = FirebaseFirestore.instance;
-  final doc = await db.collection("/usuarios/$idUsuario/extras").add(extra.toFirestore());
+  final doc = await db
+      .collection("/usuarios/$idUsuario/extras")
+      .add(extra.toFirestore());
   extra.id = doc.id;
 }
 

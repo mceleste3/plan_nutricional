@@ -72,20 +72,22 @@ class PantallaComidas extends StatelessWidget {
                                   Expanded(
                                     flex: 1,
                                     child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pushNamed(
-                                            '/editar',
-                                            arguments: [id, comidas[index].id],
-                                          );
-                                        },
-                                        child: const Icon(Icons.edit),
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            padding: const EdgeInsets.only(
-                                                right: 1))),
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed(
+                                          '/editar',
+                                          arguments: [id, comidas[index].id],
+                                        );
+                                      },
+                                      child: const Icon(Icons.edit),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding:
+                                            const EdgeInsets.only(right: 1),
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 20,

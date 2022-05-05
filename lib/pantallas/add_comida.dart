@@ -110,6 +110,9 @@ class _AddComidaState extends State<AddComida> {
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(15)),
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
                 )
               ],
             ),

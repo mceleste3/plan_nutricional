@@ -119,7 +119,7 @@ class _EditarComidaState extends State<EditarComida> {
                         padding: const EdgeInsets.all(15)),
                   ),
                 ),
-                const SizedBox(height: 10)
+                const SizedBox(height: 30)
               ],
             ),
           ),
