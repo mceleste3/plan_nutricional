@@ -1,17 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plan_nutricional/clases/usuario.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 
 class PantallaComidas extends StatelessWidget {
-  final String id = 'CKqi4OfuXeMHe41cyOug';
   const PantallaComidas({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
     return Scaffold(
       body: StreamBuilder(
-        stream: usuarioSnapshots(id),
+        stream: usuarioSnapshots(userid),
         builder: (
           BuildContext context,
           AsyncSnapshot<DocumentSnapshot<Usuario>> snapshot,
@@ -27,7 +29,7 @@ class PantallaComidas extends StatelessWidget {
             );
           }
           return StreamBuilder(
-            stream: comidaListSnapshots(id),
+            stream: comidaListSnapshots(userid),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
               if (snapshot.hasError) {
@@ -75,7 +77,10 @@ class PantallaComidas extends StatelessWidget {
                                       onPressed: () {
                                         Navigator.of(context).pushNamed(
                                           '/editar',
-                                          arguments: [id, comidas[index].id],
+                                          arguments: [
+                                            userid,
+                                            comidas[index].id
+                                          ],
                                         );
                                       },
                                       child: const Icon(Icons.edit),
@@ -120,7 +125,7 @@ class PantallaComidas extends StatelessWidget {
                                                   onPressed: () {
                                                     FirebaseFirestore.instance
                                                         .doc(
-                                                            "/usuarios/$id/comidas/${comidas[index].id}")
+                                                            "/usuarios/$userid/comidas/${comidas[index].id}")
                                                         .delete();
                                                     Navigator.pop(
                                                         context, true);

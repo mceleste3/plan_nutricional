@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plan_nutricional/clases/usuario.dart';
 import 'package:plan_nutricional/clases/extras.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Extras extends StatelessWidget {
-  final String id = 'CKqi4OfuXeMHe41cyOug';
   const Extras({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
     return Scaffold(
       body: StreamBuilder(
-        stream: usuarioSnapshots(id),
+        stream: usuarioSnapshots(userid),
         builder: (
           BuildContext context,
           AsyncSnapshot<DocumentSnapshot<Usuario>> snapshot,
@@ -27,7 +29,7 @@ class Extras extends StatelessWidget {
             );
           }
           return StreamBuilder(
-            stream: extraListSnapshots(id),
+            stream: extraListSnapshots(userid),
             builder: (
               BuildContext context,
               AsyncSnapshot<List<Extra>> snapshot,
@@ -55,7 +57,7 @@ class Extras extends StatelessWidget {
                       child: SingleChildScrollView(
                           child: ExtraLista(
                         listaExtras: extras,
-                        id: id,
+                        id: userid,
                       )),
                     ),
                   ),
@@ -63,7 +65,7 @@ class Extras extends StatelessWidget {
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: AgregarExtra(id: id),
+                      child: AgregarExtra(id: userid),
                     ),
                   )
                 ],

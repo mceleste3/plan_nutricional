@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 
@@ -25,6 +26,8 @@ class _AddComidaState extends State<AddComida> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
     Comida comida = Comida.r(
       '',
       '',
@@ -35,7 +38,7 @@ class _AddComidaState extends State<AddComida> {
 
     Future<void> _guardarPulsado(Comida c) async {
       c.nombre = _nombre.text;
-      addComida('CKqi4OfuXeMHe41cyOug', c);
+      addComida(userid, c);
       Navigator.of(context).pop();
     }
 

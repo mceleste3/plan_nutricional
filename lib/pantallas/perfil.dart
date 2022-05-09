@@ -11,8 +11,6 @@ class Perfil extends StatefulWidget {
 }
 
 class _PerfilState extends State<Perfil> {
-  final String id = 'CKqi4OfuXeMHe41cyOug';
-
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
@@ -24,7 +22,7 @@ class _PerfilState extends State<Perfil> {
     );
     return Scaffold(
       body: StreamBuilder(
-        stream: usuarioSnapshots(id),
+        stream: usuarioSnapshots(userid),
         builder: (
           BuildContext context,
           AsyncSnapshot<DocumentSnapshot<Usuario>> snapshot,
@@ -38,7 +36,7 @@ class _PerfilState extends State<Perfil> {
           final doc = snapshot.data!;
           var usuario = doc.data();
           final docUsuario =
-              FirebaseFirestore.instance.collection("/usuarios").doc(id);
+              FirebaseFirestore.instance.collection("/usuarios").doc(userid);
           if (usuario == null) {
             return const Center(
               child: Text("El usuario no existente"),
