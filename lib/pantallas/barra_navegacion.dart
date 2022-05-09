@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/pantallas/inicio.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
@@ -11,43 +13,72 @@ class BarraNavegacion extends StatefulWidget {
 }
 
 class _BarraNavegacionState extends State<BarraNavegacion> {
+  bool usuarioCreado = false;
+
   late int _paginaActual;
-  static final List<String> titulos = [
-    'Comidas',
-    'Calendario',
-    'Inicio',
-    'Stock',
-    'Perfil'
-  ];
+  static final List<String> titulos = ['Comidas', 'Calendario', 'Inicio', 'Stock', 'Perfil'];
   PageController pageController = PageController();
   /*static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
   static final List<Widget> _widgetOptions = <Widget>[
     const PantallaComidas(),
-    Container(
-      color: Colors.white,
-    ),
+    Container(color: Colors.white),
     const Inicio(),
-    Extras(),
+    const Extras(),
     const Perfil(),
   ];
+
+  Future<void> crearUsuarioSiNoExiste() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final userRef = FirebaseFirestore.instance.doc("/usuarios/$uid");
+    final user = await userRef.get();
+    if (!user.exists) {
+      // Inicialización del usuario la primera vez
+      await userRef.set({
+        'nombre': '',
+        'apellidos': '',
+        'altura': 0,
+        'edad': 0,
+        'peso': 0,
+        'sexo': 0,
+        'medida1': '',
+        'medida2': '',
+        'medida3': '',
+        'medida4': '',
+      });
+    }
+    setState(() => usuarioCreado = true);
+  }
+
   @override
   void initState() {
     _paginaActual = 2;
     super.initState();
+    crearUsuarioSiNoExiste();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            "${titulos.elementAt(_paginaActual)}",
-            style: const TextStyle(),
-          ),
+    final appBar = AppBar(
+      title: Center(
+        child: Text(
+          titulos.elementAt(_paginaActual),
+          style: const TextStyle(),
         ),
       ),
+    );
+
+    if (!usuarioCreado) {
+      return Scaffold(
+        appBar: appBar,
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return Scaffold(
+      appBar: appBar,
       body: _widgetOptions.elementAt(_paginaActual),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
