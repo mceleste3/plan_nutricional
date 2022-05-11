@@ -43,8 +43,23 @@ class Extras extends StatelessWidget {
               final extras = snapshot.data!;
 
               if (extras.isEmpty) {
-                return const Center(
-                  child: Text("No hay extras"),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Expanded(
+                      flex: 9,
+                      child: Center(
+                        child: Text("No hay extras"),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AgregarExtra(id: userid),
+                      ),
+                    )
+                  ],
                 );
               }
               return Column(

@@ -41,8 +41,37 @@ class PantallaComidas extends StatelessWidget {
               final comidas = snapshot.data!;
 
               if (comidas.isEmpty) {
-                return const Center(
-                  child: Text("No hay comidas"),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8, right: 8, left: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Expanded(
+                        flex: 9,
+                        child: Center(
+                          child: Text("No hay comidas"),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/agregar');
+                            },
+                            child: const Icon(Icons.add),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              minimumSize: const Size(50, 33),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
               return Padding(

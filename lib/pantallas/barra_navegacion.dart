@@ -16,7 +16,13 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
   bool usuarioCreado = false;
 
   late int _paginaActual;
-  static final List<String> titulos = ['Comidas', 'Calendario', 'Inicio', 'Stock', 'Perfil'];
+  static final List<String> titulos = [
+    'Comidas',
+    'Calendario',
+    'Inicio',
+    'Stock',
+    'Perfil'
+  ];
   PageController pageController = PageController();
   /*static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
@@ -40,7 +46,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
         'altura': 0,
         'edad': 0,
         'peso': 0,
-        'sexo': 0,
+        'sexo': '',
         'medida1': '',
         'medida2': '',
         'medida3': '',
