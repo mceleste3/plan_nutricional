@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_nutricional/pantallas/calendario.dart';
 import 'package:plan_nutricional/pantallas/inicio.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 import 'package:plan_nutricional/pantallas/perfil.dart';
@@ -28,7 +29,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
   static final List<Widget> _widgetOptions = <Widget>[
     const PantallaComidas(),
-    Container(color: Colors.white),
+    const Calendario(),
     const Inicio(),
     const Extras(),
     const Perfil(),
@@ -93,7 +94,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
             _paginaActual = index;
           });
         },
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFF009696),
         currentIndex: _paginaActual,
         selectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[

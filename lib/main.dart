@@ -21,14 +21,26 @@ void main() async {
 
 class NutritionApp extends StatelessWidget {
   const NutritionApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    Map<int, Color> color = const {
+      50: Color(0xFF183A3C),
+      100: Color(0x3342FFFF),
+      200: Color(0x4942FFFF),
+      300: Color(0x6642FFFF),
+      400: Color(0x7C42D6FF),
+      500: Color(0x9942FFFF),
+      600: Color(0xAF42FFFF),
+      700: Color(0xCC42FFFF),
+      800: Color(0xE442FFFF),
+      900: Color(0xFF009696)
+    };
+    MaterialColor colorCustom = MaterialColor(0xFF009696, color);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nutritional Plan',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: colorCustom,
       ),
       home: const BarraNavegacion(),
       routes: {
