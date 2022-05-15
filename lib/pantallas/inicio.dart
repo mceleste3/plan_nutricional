@@ -6,8 +6,8 @@ class Inicio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    final userid = user.uid;
+    //final user = FirebaseAuth.instance.currentUser!;
+    //final userid = user.uid;
     return Column(
       children: [
         Row(

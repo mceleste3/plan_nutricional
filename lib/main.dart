@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plan_nutricional/pantallas/add_comida.dart';
 import 'package:plan_nutricional/pantallas/barra_navegacion.dart';
 import 'package:plan_nutricional/pantallas/editar_comida.dart';
+import 'package:plan_nutricional/pantallas/programar.dart';
 import 'package:plan_nutricional/widgets/auth_gate.dart';
 
 import 'firebase_options.dart';
@@ -46,6 +47,7 @@ class NutritionApp extends StatelessWidget {
       routes: {
         '/agregar': (context) => const AddComida(),
         '/editar': (context) => const EditarComida(),
+        '/programar': (context) => const Programar(),
       },
     );
   }
