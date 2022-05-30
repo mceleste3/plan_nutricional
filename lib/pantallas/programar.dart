@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plan_nutricional/pantallas/stock_extras.dart';
 
 class Programar extends StatefulWidget {
   const Programar({Key? key}) : super(key: key);

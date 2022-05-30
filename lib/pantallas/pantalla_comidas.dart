@@ -252,11 +252,11 @@ class ComidaWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${listaComida[index].nombre}",
+            listaComida[index].nombre,
             style: titleStyle,
           ),
           Text(
-            "${listaComida[index].tipo.toUpperCase()}",
+            listaComida[index].tipo.toUpperCase(),
             style: subtitleStyle,
           ),
           Text("Carbohidrato: ${listaComida[index].carbohidrato.join(", ")}",
