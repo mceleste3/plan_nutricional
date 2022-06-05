@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_nutricional/pantallas/calendario.dart';
+import 'package:plan_nutricional/pantallas/pantalla_calendario.dart';
 import 'package:plan_nutricional/pantallas/inicio.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 import 'package:plan_nutricional/pantallas/perfil.dart';

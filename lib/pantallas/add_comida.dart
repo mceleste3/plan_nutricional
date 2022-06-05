@@ -175,7 +175,9 @@ class _ColumnaState extends State<Columna> {
             ),
             ElevatedButton(
               onPressed: () => setState(() {
-                widget.listaIngredientes.removeLast();
+                if (widget.listaIngredientes.isNotEmpty) {
+                  widget.listaIngredientes.removeLast();
+                }
               }),
               child: const Icon(Icons.remove),
               style: ElevatedButton.styleFrom(

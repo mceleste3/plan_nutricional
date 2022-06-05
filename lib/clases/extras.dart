@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Extra {
   String? id;
   String nombre, cantidad;
   String? repeticion;
-  List<num>? horas;
+  List<TimeOfDay>? horas;
   List<DateTime>? dias;
 
   Extra(this.nombre, this.cantidad);
@@ -17,7 +18,7 @@ class Extra {
         cantidad = data['cantidad'],
         repeticion = data['repeticion'] {
     if (data.containsKey('horas')) {
-      horas = (data['horas'] as List).cast<num>();
+      horas = (data['horas'] as List).cast<TimeOfDay>();
     } else if (data.containsKey('dias')) {
       dias = (data['dias'] as List)
           .map((ts) => ts.toDate())
