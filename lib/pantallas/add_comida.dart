@@ -88,17 +88,14 @@ class _AddComidaState extends State<AddComida> {
                 Columna(
                   nombre: 'Carbohidrato',
                   listaIngredientes: comida.carbohidrato,
-                  comida: comida,
                 ),
                 Columna(
                   nombre: 'Proteína',
                   listaIngredientes: comida.proteina,
-                  comida: comida,
                 ),
                 Columna(
                   nombre: 'Grasa',
                   listaIngredientes: comida.grasa,
-                  comida: comida,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 200, top: 40),
@@ -131,12 +128,10 @@ class Columna extends StatefulWidget {
     Key? key,
     required this.nombre,
     required this.listaIngredientes,
-    required this.comida,
   }) : super(key: key);
 
   final String nombre;
   final List<Ingrediente> listaIngredientes;
-  final Comida comida;
 
   @override
   State<Columna> createState() => _ColumnaState();

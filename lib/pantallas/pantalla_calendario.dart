@@ -2,20 +2,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_nutricional/clases/comidas.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:plan_nutricional/clases/calendario.dart';
 
-class Calendario extends StatefulWidget {
-  const Calendario({Key? key}) : super(key: key);
+class PantallaCalendario extends StatefulWidget {
+  const PantallaCalendario({Key? key}) : super(key: key);
 
   @override
-  State<Calendario> createState() => _CalendarioState();
+  State<PantallaCalendario> createState() => _PantallaCalendarioState();
 }
 
-class _CalendarioState extends State<Calendario> {
+class _PantallaCalendarioState extends State<PantallaCalendario> {
   final user = FirebaseAuth.instance.currentUser!;
   DateTime daySelected = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    Calendario menuDia = Calendario(daySelected);
+
+    Future<void> _guardarPulsado(Calendario c) async {
+      //c. = _nombre.text;
+      //addComida(userid, c);
+      debugPrint('Dia ${c.fecha.day}, ${c.franja['almuerzo']}');
+      Navigator.of(context).pop();
+    }
+
     return StreamBuilder(
         stream: comidaListSnapshots(user.uid),
         builder: (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
@@ -84,7 +94,7 @@ class _CalendarioState extends State<Calendario> {
                               builder: (context) {
                                 return AlertDialog(
                                   backgroundColor:
-                                      Color.fromARGB(255, 116, 115, 115),
+                                      const Color.fromARGB(255, 116, 115, 115),
                                   content: SizedBox(
                                     height: 400,
                                     child: SingleChildScrollView(
@@ -98,7 +108,11 @@ class _CalendarioState extends State<Calendario> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Desplegable(comidas: comidas),
+                                          Desplegable(
+                                            comidas: comidas,
+                                            idComida:
+                                                menuDia.franja["desayuno"],
+                                          ),
                                           const SizedBox(height: 15),
                                           const Text(
                                             'Snack',
@@ -106,7 +120,10 @@ class _CalendarioState extends State<Calendario> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Desplegable(comidas: comidas),
+                                          Desplegable(
+                                              comidas: comidas,
+                                              idComida:
+                                                  menuDia.franja["snack"]),
                                           const SizedBox(
                                             height: 15,
                                           ),
@@ -116,7 +133,10 @@ class _CalendarioState extends State<Calendario> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Desplegable(comidas: comidas),
+                                          Desplegable(
+                                              comidas: comidas,
+                                              idComida:
+                                                  menuDia.franja["almuerzo"]),
                                           const SizedBox(
                                             height: 15,
                                           ),
@@ -126,7 +146,10 @@ class _CalendarioState extends State<Calendario> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Desplegable(comidas: comidas),
+                                          Desplegable(
+                                              comidas: comidas,
+                                              idComida:
+                                                  menuDia.franja["merienda"]),
                                           const SizedBox(
                                             height: 15,
                                           ),
@@ -136,7 +159,9 @@ class _CalendarioState extends State<Calendario> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Desplegable(comidas: comidas),
+                                          Desplegable(
+                                              comidas: comidas,
+                                              idComida: menuDia.franja["cena"]),
                                           const SizedBox(
                                             height: 15,
                                           ),
@@ -147,7 +172,7 @@ class _CalendarioState extends State<Calendario> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        //  _aceptarPulsado(extra, widget.id);
+                                        _guardarPulsado(menuDia);
                                       },
                                       child: const Text(
                                         "Guardar",
@@ -192,19 +217,18 @@ class _CalendarioState extends State<Calendario> {
 }
 
 class Desplegable extends StatefulWidget {
-  const Desplegable({
-    Key? key,
-    required this.comidas,
-  }) : super(key: key);
-
-  final List<Comida> comidas;
+  const Desplegable({Key? key, required this.comidas, required this.idComida})
+      : super(key: key);
 
   @override
   State<Desplegable> createState() => _DesplegableState();
+  final List<Comida> comidas;
+  final dynamic idComida;
 }
 
 class _DesplegableState extends State<Desplegable> {
   String dropdownValue = 'ninguno';
+
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
@@ -228,6 +252,7 @@ class _DesplegableState extends State<Desplegable> {
       onChanged: (String? selectedValue) {
         setState(() {
           dropdownValue = selectedValue!;
+          //widget.idComida = selectedValue;
         });
         debugPrint(
           "Ha cambiado el valor a $selectedValue",

@@ -35,14 +35,12 @@ class _ProgramarState extends State<Programar> {
     ),
     DayInWeek("Domingo", isSelected: true),
   ];
-  late Widget horasDias;
   late bool habilitadoDias;
   late bool habilitadoHoras;
 
   @override
   void initState() {
     super.initState();
-    horasDias = Container();
     habilitadoDias = false;
     habilitadoHoras = false;
   }
@@ -95,7 +93,7 @@ class _ProgramarState extends State<Programar> {
               }
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 10, top: 30),
+                  padding: const EdgeInsets.only(left: 15, right: 10, top: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -201,8 +199,11 @@ class _ProgramarState extends State<Programar> {
                         ),
                         padding: 4,
                       ),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 200, top: 40),
+                        padding: const EdgeInsets.only(left: 200, top: 20),
                         child: ElevatedButton(
                           onPressed: () {
                             // _guardarPulsado(extra);
@@ -366,49 +367,6 @@ class _CasillaHoraState extends State<CasillaHora> {
         const SizedBox(
           height: 15,
         )
-      ],
-    );
-  }
-}
-
-class AddHorasDias extends StatefulWidget {
-  const AddHorasDias({Key? key, required this.extra, required this.texto})
-      : super(key: key);
-
-  final Extra extra;
-  final String texto;
-
-  @override
-  State<AddHorasDias> createState() => _AddHorasDiasState();
-}
-
-class _AddHorasDiasState extends State<AddHorasDias> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          // widget.texto,
-          'Seleccionar horas/días',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Text('${widget.extra.repeticion}');
-            //debugPrint('add: ${widget.extra.repeticion}xxx');
-          },
-          child: const Icon(Icons.alarm_on),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            minimumSize: const Size(50, 33),
-          ),
-        ),
       ],
     );
   }

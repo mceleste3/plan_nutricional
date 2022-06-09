@@ -1,11 +1,11 @@
 class Calendario {
   DateTime fecha;
   Map<String, String> franja = {
-    'desayuno': 'idComida',
-    'snack': 'idComida',
-    'almuerzo': 'idComida',
-    'merianda': 'idComida',
-    'cena': 'idComida'
+    'desayuno': '',
+    'snack': '',
+    'almuerzo': '',
+    'merianda': '',
+    'cena': ''
   };
   Calendario(this.fecha);
 

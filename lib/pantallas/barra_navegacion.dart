@@ -29,7 +29,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
   static final List<Widget> _widgetOptions = <Widget>[
     const PantallaComidas(),
-    const Calendario(),
+    const PantallaCalendario(),
     const Inicio(),
     const Extras(),
     const Perfil(),
