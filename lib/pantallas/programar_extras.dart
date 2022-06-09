@@ -99,8 +99,7 @@ class _ProgramarState extends State<Programar> {
                     children: [
                       const Text(
                         'Tipo de suplemento/medicación',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Desplegable(
                         extras: extras,
@@ -111,8 +110,7 @@ class _ProgramarState extends State<Programar> {
                       ),
                       const Text(
                         'Repetir',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(
                         height: 15,
@@ -130,8 +128,7 @@ class _ProgramarState extends State<Programar> {
                               'Dirariamente',
                               style: TextStyle(fontSize: 15),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(15)),
+                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
                           ),
                           const SizedBox(
                             width: 45,
@@ -147,8 +144,7 @@ class _ProgramarState extends State<Programar> {
                               'Semanalmente',
                               style: TextStyle(fontSize: 15),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(15)),
+                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
                           ),
                         ],
                       ),
@@ -164,38 +160,30 @@ class _ProgramarState extends State<Programar> {
                         height: 30,
                       ),
                       SelectWeekDays(
-                        daysFillColor:
-                            habilitadoHoras == false && habilitadoDias == true
-                                ? Colors.white
-                                : const Color.fromARGB(255, 208, 208, 208),
-                        daysBorderColor:
-                            habilitadoHoras == false && habilitadoDias == true
-                                ? Colors.white
-                                : const Color.fromARGB(255, 164, 163, 163),
-                        onSelect:
-                            habilitadoHoras == false && habilitadoDias == true
-                                ? (value) {
-                                    debugPrint('${value.runtimeType}');
-                                    diasSeleccionados = value;
-                                  }
-                                : (value) {
-                                    diasSeleccionados = [];
-                                  },
+                        daysFillColor: habilitadoHoras == false && habilitadoDias == true
+                            ? Colors.white
+                            : const Color.fromARGB(255, 208, 208, 208),
+                        daysBorderColor: habilitadoHoras == false && habilitadoDias == true
+                            ? Colors.white
+                            : const Color.fromARGB(255, 164, 163, 163),
+                        onSelect: (value) {
+                          if (habilitadoDias == true) {
+                            debugPrint('${value.runtimeType}');
+                            diasSeleccionados = value;
+                          }
+                        },
                         days: days,
-                        unSelectedDayTextColor:
-                            habilitadoHoras == false && habilitadoDias == true
-                                ? Colors.white
-                                : const Color.fromARGB(255, 164, 163, 163),
-                        selectedDayTextColor:
-                            habilitadoHoras == false && habilitadoDias == true
-                                ? Colors.black
-                                : const Color.fromARGB(255, 164, 163, 163),
+                        unSelectedDayTextColor: habilitadoHoras == false && habilitadoDias == true
+                            ? Colors.white
+                            : const Color.fromARGB(255, 164, 163, 163),
+                        selectedDayTextColor: habilitadoHoras == false && habilitadoDias == true
+                            ? Colors.black
+                            : const Color.fromARGB(255, 164, 163, 163),
                         boxDecoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color:
-                              habilitadoHoras == false && habilitadoDias == true
-                                  ? const Color(0xFF009696)
-                                  : const Color.fromARGB(255, 208, 208, 208),
+                          color: habilitadoHoras == false && habilitadoDias == true
+                              ? const Color(0xFF009696)
+                              : const Color.fromARGB(255, 208, 208, 208),
                         ),
                         padding: 4,
                       ),
@@ -212,8 +200,7 @@ class _ProgramarState extends State<Programar> {
                             'Guardar',
                             style: TextStyle(fontSize: 16),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(15)),
+                          style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
                         ),
                       ),
                     ],
@@ -229,11 +216,7 @@ class _ProgramarState extends State<Programar> {
 }
 
 class SelectorHora extends StatefulWidget {
-  const SelectorHora(
-      {Key? key,
-      required this.listaHoras,
-      required this.horas,
-      required this.dias})
+  const SelectorHora({Key? key, required this.listaHoras, required this.horas, required this.dias})
       : super(key: key);
 
   final List<TimeOfDay>? listaHoras;
@@ -373,8 +356,7 @@ class _CasillaHoraState extends State<CasillaHora> {
 }
 
 class Desplegable extends StatefulWidget {
-  const Desplegable({Key? key, required this.extras, required this.extra})
-      : super(key: key);
+  const Desplegable({Key? key, required this.extras, required this.extra}) : super(key: key);
 
   final List<Extra> extras;
   final Extra extra;
