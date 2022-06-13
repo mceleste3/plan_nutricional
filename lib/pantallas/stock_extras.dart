@@ -141,11 +141,11 @@ class _AgregarExtraState extends State<AgregarExtra> {
             return AlertDialog(
               backgroundColor: const Color(0xFF515151),
               content: SizedBox(
-                height: 285,
+                height: 180,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    /*const Text(
                       'Repetición',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500),
@@ -153,8 +153,8 @@ class _AgregarExtraState extends State<AgregarExtra> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Desplegable(extra: extra),
-                    const SizedBox(height: 30),
+                   Desplegable(extra: extra),
+                    const SizedBox(height: 30),*/
                     const Text(
                       'Nombre',
                       style: TextStyle(
@@ -508,6 +508,7 @@ class _CasillaExtraState extends State<CasillaExtra> {
   }
 }
 
+/*
 class Desplegable extends StatefulWidget {
   const Desplegable({
     Key? key,
@@ -551,4 +552,4 @@ class _DesplegableState extends State<Desplegable> {
       }).toList(),
     );
   }
-}
+}*/

@@ -52,6 +52,7 @@ class Inicio extends StatelessWidget {
               ),
               child:
                   const Center(child: Text("Menú seleccionado para ese día")),
+              //TODO : Mostrar solo menú (de la lista de menús) coincida con el dia actual (calendario.fecha)
             ),
           )
         ],

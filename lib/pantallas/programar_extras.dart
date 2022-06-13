@@ -45,12 +45,69 @@ class _ProgramarState extends State<Programar> {
     habilitadoHoras = false;
   }
 
+  List<DateTime> calcularDiasParaCalendario(
+      String dia, DateTime inicio, DateTime fin) {
+    List<DateTime> days = [];
+    //Intervalo de fechas para generar una lista con los días de la semana seleccionados
+    for (DateTime d = inicio; d.isBefore(fin); d.add(const Duration(days: 1))) {
+      int i = 0;
+      switch (dia) {
+        //Calcula el número del día de la semana
+        case 'Lunes':
+          i = 1;
+          break;
+        case 'Martes':
+          i = 2;
+          break;
+        case 'Miércoles':
+          i = 3;
+          break;
+        case 'Jueves':
+          i = 4;
+          break;
+        case 'Viernes':
+          i = 5;
+          break;
+        case 'Sábado':
+          i = 6;
+          break;
+        case 'Domingo':
+          i = 7;
+          break;
+      }
+      if (d.weekday == i) {
+        days.add(d);
+      }
+    }
+    return days;
+  }
+
+  Future<void> _guardarPulsado(
+    String usuarioId,
+    Extra e,
+    List<String> dias,
+  ) async {
+    final DateTime inicio = DateTime.now();
+    final DateTime fin = DateTime.utc(2022, 7, 14);
+    if (habilitadoDias == false && habilitadoHoras == true) {
+      e.repeticion = 'Diariamente';
+    } else {
+      e.repeticion = 'Semanalmente';
+      //Se necesita transferir los días de la lista String a una lista de fechas en el calendario (DateTime)
+      for (int i = 0; i < dias.length; i++) {
+        e.dias = calcularDiasParaCalendario(dias[i], inicio, fin);
+      }
+    }
+    updateExtra(usuarioId, e);
+    Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
     Extra extra = Extra('', '');
-    List<String> diasSeleccionados;
+    List<String> diasSeleccionados = [];
     extra.repeticion = 'diaria';
     extra.horas = [];
 
@@ -99,7 +156,8 @@ class _ProgramarState extends State<Programar> {
                     children: [
                       const Text(
                         'Tipo de suplemento/medicación',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Desplegable(
                         extras: extras,
@@ -110,7 +168,8 @@ class _ProgramarState extends State<Programar> {
                       ),
                       const Text(
                         'Repetir',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(
                         height: 15,
@@ -128,7 +187,8 @@ class _ProgramarState extends State<Programar> {
                               'Dirariamente',
                               style: TextStyle(fontSize: 15),
                             ),
-                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15)),
                           ),
                           const SizedBox(
                             width: 45,
@@ -141,10 +201,11 @@ class _ProgramarState extends State<Programar> {
                               });
                             },
                             child: const Text(
-                              'Semanalmente',
+                              'Semanalmente ',
                               style: TextStyle(fontSize: 15),
                             ),
-                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15)),
                           ),
                         ],
                       ),
@@ -152,7 +213,7 @@ class _ProgramarState extends State<Programar> {
                         height: 20,
                       ),
                       SelectorHora(
-                        listaHoras: extra.horas,
+                        extra: extra,
                         horas: habilitadoHoras,
                         dias: habilitadoDias,
                       ),
@@ -160,12 +221,14 @@ class _ProgramarState extends State<Programar> {
                         height: 30,
                       ),
                       SelectWeekDays(
-                        daysFillColor: habilitadoHoras == false && habilitadoDias == true
-                            ? Colors.white
-                            : const Color.fromARGB(255, 208, 208, 208),
-                        daysBorderColor: habilitadoHoras == false && habilitadoDias == true
-                            ? Colors.white
-                            : const Color.fromARGB(255, 164, 163, 163),
+                        daysFillColor:
+                            habilitadoHoras == false && habilitadoDias == true
+                                ? Colors.white
+                                : const Color.fromARGB(255, 208, 208, 208),
+                        daysBorderColor:
+                            habilitadoHoras == false && habilitadoDias == true
+                                ? Colors.white
+                                : const Color.fromARGB(255, 164, 163, 163),
                         onSelect: (value) {
                           if (habilitadoDias == true) {
                             debugPrint('${value.runtimeType}');
@@ -173,17 +236,20 @@ class _ProgramarState extends State<Programar> {
                           }
                         },
                         days: days,
-                        unSelectedDayTextColor: habilitadoHoras == false && habilitadoDias == true
-                            ? Colors.white
-                            : const Color.fromARGB(255, 164, 163, 163),
-                        selectedDayTextColor: habilitadoHoras == false && habilitadoDias == true
-                            ? Colors.black
-                            : const Color.fromARGB(255, 164, 163, 163),
+                        unSelectedDayTextColor:
+                            habilitadoHoras == false && habilitadoDias == true
+                                ? Colors.white
+                                : const Color.fromARGB(255, 164, 163, 163),
+                        selectedDayTextColor:
+                            habilitadoHoras == false && habilitadoDias == true
+                                ? Colors.black
+                                : const Color.fromARGB(255, 164, 163, 163),
                         boxDecoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: habilitadoHoras == false && habilitadoDias == true
-                              ? const Color(0xFF009696)
-                              : const Color.fromARGB(255, 208, 208, 208),
+                          color:
+                              habilitadoHoras == false && habilitadoDias == true
+                                  ? const Color(0xFF009696)
+                                  : const Color.fromARGB(255, 208, 208, 208),
                         ),
                         padding: 4,
                       ),
@@ -194,13 +260,14 @@ class _ProgramarState extends State<Programar> {
                         padding: const EdgeInsets.only(left: 200, top: 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            // _guardarPulsado(extra);
+                            _guardarPulsado(userid, extra, diasSeleccionados);
                           },
                           child: const Text(
                             'Guardar',
                             style: TextStyle(fontSize: 16),
                           ),
-                          style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(15)),
                         ),
                       ),
                     ],
@@ -216,10 +283,11 @@ class _ProgramarState extends State<Programar> {
 }
 
 class SelectorHora extends StatefulWidget {
-  const SelectorHora({Key? key, required this.listaHoras, required this.horas, required this.dias})
+  const SelectorHora(
+      {Key? key, required this.extra, required this.horas, required this.dias})
       : super(key: key);
 
-  final List<TimeOfDay>? listaHoras;
+  final Extra extra;
   final bool horas;
   final bool dias;
   @override
@@ -236,7 +304,7 @@ class _SelectorHoraState extends State<SelectorHora> {
     if (newTime != null) {
       setState(() {
         _time = newTime;
-        widget.listaHoras!.add(_time);
+        widget.extra.horas!.add(_time);
       });
     }
   }
@@ -282,8 +350,8 @@ class _SelectorHoraState extends State<SelectorHora> {
             ElevatedButton(
               onPressed: () => setState(() {
                 if (widget.horas == true && widget.dias == false) {
-                  if (widget.listaHoras!.isNotEmpty) {
-                    widget.listaHoras!.removeLast();
+                  if (widget.extra.horas!.isNotEmpty) {
+                    widget.extra.horas!.removeLast();
                   }
                 } else {
                   null;
@@ -311,10 +379,10 @@ class _SelectorHoraState extends State<SelectorHora> {
         ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: widget.listaHoras!.length,
+          itemCount: widget.extra.horas!.length,
           itemBuilder: (context, index) {
-            debugPrint('longitud: ${widget.listaHoras!.length}');
-            return CasillaHora(time: widget.listaHoras![index]);
+            debugPrint('longitud: ${widget.extra.horas!.length}');
+            return CasillaHora(time: widget.extra.horas![index]);
           },
         ),
       ],
@@ -356,7 +424,8 @@ class _CasillaHoraState extends State<CasillaHora> {
 }
 
 class Desplegable extends StatefulWidget {
-  const Desplegable({Key? key, required this.extras, required this.extra}) : super(key: key);
+  const Desplegable({Key? key, required this.extras, required this.extra})
+      : super(key: key);
 
   final List<Extra> extras;
   final Extra extra;
@@ -376,7 +445,7 @@ class _DesplegableState extends State<Desplegable> {
 
   @override
   Widget build(BuildContext context) {
-    String? repeticion;
+    String? repeticion, id;
     return DropdownButton(
       value: dropdownValue,
       items: [
@@ -385,6 +454,7 @@ class _DesplegableState extends State<Desplegable> {
               value: widget.extras[i].nombre,
               child: Text(widget.extras[i].nombre.substring(0, 8)),
               onTap: () {
+                id = widget.extras[i].id;
                 //widget.indice = i;
                 //debugPrint(
                 // "Has seleccionado la comida ${widget.comidas[i].nombre}",
@@ -397,10 +467,11 @@ class _DesplegableState extends State<Desplegable> {
         setState(() {
           dropdownValue = selectedValue!;
           widget.extra.repeticion = repeticion;
+          widget.extra.id = id;
           debugPrint(widget.extra.repeticion);
         });
         debugPrint(
-          "Ha cambiado el valor a $selectedValue",
+          "Ha cambiado el valor a $selectedValue, ${widget.extra.id}",
         );
       },
     );

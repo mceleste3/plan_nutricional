@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 enum FranjaHoraria {
   desayuno,
   snack,
@@ -52,4 +54,24 @@ class Calendario {
     data['franjas'] = franjasFirestore;
     return data;
   }
+}
+
+/*
+Stream<List<Calendario>> calendarioListSnapshots(
+  String usuarioId,
+) {
+  final db = FirebaseFirestore.instance;
+  return db
+      .collection("/usuarios/$usuarioId/comidas")
+      .snapshots()
+      .map((querySnap) {
+    return querySnap.docs
+        .map((doc) => Calendario.fromFirestore(doc.data()))
+        .toList();
+  });
+}*/
+
+Future<void> addCalendario(String idUsuario, Calendario c) async {
+  final db = FirebaseFirestore.instance;
+  await db.collection("/usuarios/$idUsuario/calendario").add(c.toFirestore());
 }

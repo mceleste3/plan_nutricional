@@ -17,6 +17,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
 
   seleccionMenu(List<Comida> comidas) async {
     // TODO: Aquí leer de Firestore la Comida de ese día.
+
     // Ahora mismo está vacío
 
     final menuDia = Calendario(daySelected);
@@ -95,7 +96,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Merienda',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
@@ -113,7 +115,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Cena',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
@@ -136,7 +139,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
           actions: [
             TextButton(
               onPressed: () {
-                _guardarPulsado(menuDia);
+                _guardarPulsado(menuDia, user.uid);
               },
               child: const Text(
                 "Guardar",
@@ -158,11 +161,9 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
     );
   }
 
-  Future<void> _guardarPulsado(Calendario c) async {
-    //c. = _nombre.text;
-    //addComida(userid, c);
-    debugPrint('Dia ${c.fecha.day}, ${c.franjas}');
-    // TODO: Guardar en Firestore
+  Future<void> _guardarPulsado(Calendario c, String usuarioid) async {
+    addCalendario(usuarioid, c);
+    // debugPrint('Dia ${c.fecha.day}, ${c.franjas}');
     Navigator.of(context).pop();
   }
 
@@ -176,7 +177,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
           }
           final comidas = snapshot.data!;
           return Padding(
-            padding: const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
+            padding:
+                const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
             child: Column(
               children: [
                 Expanded(
@@ -186,7 +188,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                       decoration: BoxDecoration(
                           color: const Color.fromRGBO(224, 212, 250, 1),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color.fromARGB(255, 166, 98, 178)),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 166, 98, 178)),
                           boxShadow: const [
                             BoxShadow(
                               blurRadius: 5,
@@ -207,7 +210,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                         },
                         eventLoader: (DateTime date) {
                           final fixedDate = DateTime(2022, 5, 17);
-                          debugPrint("$date $fixedDate");
+                          // debugPrint("$date $fixedDate");
                           if (date.year == fixedDate.year &&
                               date.month == fixedDate.month &&
                               date.day == fixedDate.day) {
@@ -232,7 +235,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                         ),
                       ),
                       ZonaBoton(
-                        text: '             Programar \n medicación/suplementos',
+                        text:
+                            '             Programar \n medicación/suplementos',
                         child: Boton(
                           icon: Icons.medication,
                           onPressed: () {
@@ -292,9 +296,7 @@ class _DesplegableState extends State<Desplegable> {
           dropdownValue = selectedValue;
           //widget.idComida = selectedValue;
         });
-        debugPrint(
-          "Ha cambiado el valor a $selectedValue",
-        );
+        //debugPrint("Ha cambiado el valor a $selectedValue");
       },
     );
   }
