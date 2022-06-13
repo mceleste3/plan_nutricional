@@ -110,7 +110,7 @@ class _ProgramarState extends State<Programar> {
     List<String> diasSeleccionados = [];
     extra.repeticion = 'diaria';
     extra.horas = [];
-
+    String? id_Extra;
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),
@@ -160,9 +160,10 @@ class _ProgramarState extends State<Programar> {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Desplegable(
-                        extras: extras,
-                        extra: extra,
-                      ),
+                          extras: extras,
+                          onChanged: (String? idExtra) {
+                            id_Extra = idExtra;
+                          }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -260,6 +261,15 @@ class _ProgramarState extends State<Programar> {
                         padding: const EdgeInsets.only(left: 200, top: 20),
                         child: ElevatedButton(
                           onPressed: () {
+                            for (final e in extras) {
+                              if (e.id == id_Extra) {
+                                extra.id = id_Extra;
+                                extra.cantidad = e.cantidad;
+                                extra.nombre = e.nombre;
+                              }
+                            }
+                            debugPrint(
+                                'Valores $id_Extra `` funcion guardar ${extra.id}, ${extra.cantidad}, ${extra.nombre}');
                             _guardarPulsado(userid, extra, diasSeleccionados);
                           },
                           child: const Text(
@@ -424,54 +434,39 @@ class _CasillaHoraState extends State<CasillaHora> {
 }
 
 class Desplegable extends StatefulWidget {
-  const Desplegable({Key? key, required this.extras, required this.extra})
-      : super(key: key);
-
-  final List<Extra> extras;
-  final Extra extra;
+  const Desplegable({
+    Key? key,
+    required this.extras,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   State<Desplegable> createState() => _DesplegableState();
+  final List<Extra> extras;
+  final void Function(String?) onChanged;
 }
 
 class _DesplegableState extends State<Desplegable> {
   String? dropdownValue;
 
   @override
-  void initState() {
-    dropdownValue = widget.extras[0].nombre;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String? repeticion, id;
     return DropdownButton(
       value: dropdownValue,
       items: [
         for (int i = 0; i < widget.extras.length; i++)
           DropdownMenuItem<String>(
-              value: widget.extras[i].nombre,
-              child: Text(widget.extras[i].nombre.substring(0, 8)),
-              onTap: () {
-                id = widget.extras[i].id;
-                //widget.indice = i;
-                //debugPrint(
-                // "Has seleccionado la comida ${widget.comidas[i].nombre}",
-                //);
-
-                repeticion = widget.extras[i].repeticion;
-              })
+            value: widget.extras[i].id,
+            child: Text(widget.extras[i].nombre.substring(0, 8)),
+          )
       ],
       onChanged: (String? selectedValue) {
+        widget.onChanged(selectedValue);
         setState(() {
           dropdownValue = selectedValue!;
-          widget.extra.repeticion = repeticion;
-          widget.extra.id = id;
-          debugPrint(widget.extra.repeticion);
         });
         debugPrint(
-          "Ha cambiado el valor a $selectedValue, ${widget.extra.id}",
+          "Ha cambiado el valor a $selectedValue",
         );
       },
     );
