@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Extra {
   String? id;
   String nombre, cantidad;
-  String? repeticion;
+  String repeticion = "";
   List<TimeOfDay>? horas;
   List<DateTime>? dias;
 
@@ -20,9 +20,11 @@ class Extra {
     if (data.containsKey('horas')) {
       horas = (data['horas'] as List).cast<TimeOfDay>();
     } else if (data.containsKey('dias')) {
-      dias = (data['dias'] as List).map((ts) => ts.toDate()).cast<DateTime>().toList();
+      dias = (data['dias'] as List)
+          .map((ts) => ts.toDate())
+          .cast<DateTime>()
+          .toList();
     }
-    // Comprobar que uno de los dos tiene algo??
   }
 
   Map<String, dynamic> toFirestore() {
@@ -32,7 +34,7 @@ class Extra {
       'repeticion': repeticion,
     };
     if (horas != null) {
-      datos['horas'] = horas;
+      datos['horas'] = horas; //tipo
     }
     if (dias != null) {
       datos['dias'] = dias;
@@ -43,8 +45,13 @@ class Extra {
 
 Stream<List<Extra>> extraListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
-  return db.collection("/usuarios/$usuarioId/extras").snapshots().map((querySnap) {
-    return querySnap.docs.map((doc) => Extra.fromfirestore(doc.id, doc.data())).toList();
+  return db
+      .collection("/usuarios/$usuarioId/extras")
+      .snapshots()
+      .map((querySnap) {
+    return querySnap.docs
+        .map((doc) => Extra.fromfirestore(doc.id, doc.data()))
+        .toList();
   });
 }
 
@@ -58,17 +65,17 @@ Stream<Extra> extraSnapshots(String usuarioId, String extraId) {
 //añadir un extra
 Future<void> addExtra(String idUsuario, Extra extra) async {
   final db = FirebaseFirestore.instance;
-  final doc = await db.collection("/usuarios/$idUsuario/extras").add(extra.toFirestore());
+  final doc = await db
+      .collection("/usuarios/$idUsuario/extras")
+      .add(extra.toFirestore());
   extra.id = doc.id;
 }
 
 //editar extra
 Future<void> updateExtra(String usuarioId, Extra extra) async {
-  final db = FirebaseFirestore.instance;
-  // Mirar primero si el documento existe (tendría un id si ya estaba!)
-  if (extra.id == null) {
-    return addExtra(usuarioId, extra);
-  } else {
-    return db.doc("/usuarios/$usuarioId/extras/${extra.id}").update(extra.toFirestore());
-  }
+  return FirebaseFirestore.instance
+      .doc(
+        "/usuarios/$usuarioId/extras/${extra.id}",
+      )
+      .update(extra.toFirestore());
 }

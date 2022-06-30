@@ -7,13 +7,6 @@ class AuthGate extends StatelessWidget {
   final Widget app;
   const AuthGate({Key? key, required this.app}) : super(key: key);
 
-  /*Future<void> _usuarioNuevo() async {
-    final user = Usuario('');
-    final u = FirebaseAuth.instance.currentUser!;
-    final db = FirebaseFirestore.instance;
-    await setDoc(doc(db, "usuario", "${u.uid}"), data);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -28,7 +21,6 @@ class AuthGate extends StatelessWidget {
             ),
           );
         }
-        //  _usuarioNuevo();
         return app;
       },
     );

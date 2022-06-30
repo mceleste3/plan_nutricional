@@ -51,13 +51,6 @@ class _PerfilState extends State<Perfil> {
                 children: [
                   Center(child: Text(user.email ?? "<no email>")),
                   const SizedBox(height: 20),
-                  /*ElevatedButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    child: const Text("Logout"),
-                  ),
-                  const SizedBox(height: 20),*/
                   const Padding(
                     padding: EdgeInsets.only(left: 23),
                     child: Text(
@@ -117,6 +110,18 @@ class _PerfilState extends State<Perfil> {
                     doc: docUsuario,
                     user: usuario,
                     i: 4,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 23),
+                    child: Text(
+                      'Sexo: ',
+                      style: titleStyle,
+                    ),
+                  ),
+                  Casilla(
+                    doc: docUsuario,
+                    user: usuario,
+                    i: 9,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 23),
@@ -235,6 +240,9 @@ class _CasillaState extends State<Casilla> {
       case 8:
         d = u.medida4;
         break;
+      case 9:
+        d = u.sexo;
+        break;
       default:
     }
     return (d);
@@ -269,7 +277,9 @@ class _CasillaState extends State<Casilla> {
       case 8:
         u.medida4 = _controller.text;
         break;
-
+      case 9:
+        u.sexo = _controller.text;
+        break;
       default:
     }
 

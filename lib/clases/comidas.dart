@@ -105,6 +105,7 @@ Future<void> addComida(String idUsuario, Comida c) async {
   c.id = doc.id;
 }
 
+//Actualizar datos de una comida
 Future<void> updateComida(String usuarioId, Comida comida) async {
   return FirebaseFirestore.instance
       .doc(

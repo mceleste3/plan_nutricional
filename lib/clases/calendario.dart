@@ -9,7 +9,9 @@ enum FranjaHoraria {
 }
 
 class Calendario {
+  String? id;
   DateTime fecha;
+
   /*
   - Si en franjas no existe una llave, es que es franja está vacía.
   - La llave es un enum (un entero) que es más conveniente.
@@ -18,7 +20,14 @@ class Calendario {
 
   Calendario(this.fecha);
 
-  Calendario.fromFirestore(Map<String, dynamic> data) : fecha = data['fecha'] {
+  Timestamp _conviertefechaTo(DateTime f) {
+    Timestamp times = Timestamp.fromDate(f);
+    return times;
+  }
+
+  Calendario.fromFirestore(String _id, Map<String, dynamic> data)
+      : id = _id,
+        fecha = _conviertefechaFrom(data['fecha'] as Timestamp) {
     final franjasFirestore = data['franjas'] as Map<String, dynamic>;
     for (var entry in franjasFirestore.entries) {
       switch (entry.key) {
@@ -45,7 +54,7 @@ class Calendario {
 
   Map<String, dynamic> toFirestore() {
     Map<String, dynamic> data = {
-      'fecha': fecha,
+      'fecha': _conviertefechaTo(fecha),
     };
     final Map<String, String> franjasFirestore = {};
     for (var entry in franjas.entries) {
@@ -56,22 +65,27 @@ class Calendario {
   }
 }
 
-/*
-Stream<List<Calendario>> calendarioListSnapshots(
-  String usuarioId,
-) {
+DateTime _conviertefechaFrom(Timestamp f) {
+  DateTime times = f.toDate();
+  return times;
+}
+
+Stream<List<Calendario>> calendarioListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
   return db
-      .collection("/usuarios/$usuarioId/comidas")
+      .collection("/usuarios/$usuarioId/calendario")
       .snapshots()
       .map((querySnap) {
     return querySnap.docs
-        .map((doc) => Calendario.fromFirestore(doc.data()))
+        .map((doc) => Calendario.fromFirestore(doc.id, doc.data()))
         .toList();
   });
-}*/
+}
 
 Future<void> addCalendario(String idUsuario, Calendario c) async {
   final db = FirebaseFirestore.instance;
-  await db.collection("/usuarios/$idUsuario/calendario").add(c.toFirestore());
+  final doc = await db
+      .collection("/usuarios/$idUsuario/calendario")
+      .add(c.toFirestore());
+  c.id = doc.id;
 }

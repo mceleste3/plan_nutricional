@@ -19,7 +19,6 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
     // TODO: Aquí leer de Firestore la Comida de ese día.
 
     // Ahora mismo está vacío
-
     final menuDia = Calendario(daySelected);
 
     showDialog<bool>(

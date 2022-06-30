@@ -5,7 +5,7 @@ import 'package:plan_nutricional/pantallas/pantalla_calendario.dart';
 import 'package:plan_nutricional/pantallas/inicio.dart';
 import 'package:plan_nutricional/pantallas/pantalla_comidas.dart';
 import 'package:plan_nutricional/pantallas/perfil.dart';
-import 'package:plan_nutricional/pantallas/stock_extras.dart';
+import 'package:plan_nutricional/pantallas/extras.dart';
 
 class BarraNavegacion extends StatefulWidget {
   const BarraNavegacion({Key? key}) : super(key: key);
@@ -21,12 +21,10 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     'Comidas',
     'Calendario',
     'Inicio',
-    'Stock',
+    'Extras',
     'Perfil'
   ];
   PageController pageController = PageController();
-  /*static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold); */
   static final List<Widget> _widgetOptions = <Widget>[
     const PantallaComidas(),
     const PantallaCalendario(),
@@ -111,8 +109,8 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Stock',
+            icon: Icon(Icons.medication_liquid),
+            label: 'Extras',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_rounded),
