@@ -220,12 +220,13 @@ class ComidaWidget extends StatelessWidget {
 class ExtrasProgramados extends StatelessWidget {
   const ExtrasProgramados({Key? key, required this.id}) : super(key: key);
   final String id;
+
   List<Extra> extrasHoy(List<Extra> extras, DateTime today) {
     List<Extra> extrashoy = [];
     for (int i = 0; i < extras.length; i++) {
       if (extras[i].repeticion.toUpperCase() == 'SEMANAL') {
         for (int j = 0; j < extras[i].dias!.length; j++) {
-          if (extras[i].dias![j] == today) {
+          if (fechasIguales(extras[i].dias![j], today)) {
             extrashoy.add(extras[i]);
           }
         }
@@ -282,14 +283,13 @@ class ExtrasProgramados extends StatelessWidget {
                     ),
                   );
                 } else if (extrasdeHoy[index].repeticion.toLowerCase() == "diaria") {
-                  String horas = "";
                   return ListTile(
                     title: Text(
                       "- ${extrasdeHoy[index].nombre.toUpperCase()}",
                       style: const TextStyle(fontSize: 14),
                     ),
                     subtitle: Text(
-                      "  Horas: $horas",
+                      "  Horas: ${extrasdeHoy[index].listaDeHoras()}",
                       style: const TextStyle(fontSize: 15),
                     ), //poner la lista de horas
                   );

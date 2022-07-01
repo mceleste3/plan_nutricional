@@ -18,12 +18,12 @@ class Extra {
         cantidad = data['cantidad'],
         repeticion = data['repeticion'] {
     if (data.containsKey('horas')) {
-      horas = (data['horas'] as List).cast<TimeOfDay>();
+      horas = [];
+      for (final hm in data['horas']) {
+        horas!.add(TimeOfDay(hour: hm['hora'], minute: hm['minuto']));
+      }
     } else if (data.containsKey('dias')) {
-      dias = (data['dias'] as List)
-          .map((ts) => ts.toDate())
-          .cast<DateTime>()
-          .toList();
+      dias = (data['dias'] as List).map((ts) => ts.toDate()).cast<DateTime>().toList();
     }
   }
 
@@ -34,24 +34,41 @@ class Extra {
       'repeticion': repeticion,
     };
     if (horas != null) {
-      datos['horas'] = horas; //tipo
+      datos['horas'] = horas!
+          .map((tod) => {
+                'hora': tod.hour,
+                'minuto': tod.minute,
+              })
+          .toList(); //tipo
     }
     if (dias != null) {
       datos['dias'] = dias;
     }
     return datos;
   }
+
+  String listaDeHoras() {
+    if (horas == null) {
+      return "";
+    }
+    String resultado = "";
+    for (var i = 0; i < horas!.length; i++) {
+      final h = horas![i];
+      if (i > 0) {
+        resultado += ", ";
+      }
+      final hora = h.hour.toString().padLeft(2, "0");
+      final minutos = h.minute.toString().padLeft(2, "0");
+      resultado += "$hora:$minutos";
+    }
+    return resultado;
+  }
 }
 
 Stream<List<Extra>> extraListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
-  return db
-      .collection("/usuarios/$usuarioId/extras")
-      .snapshots()
-      .map((querySnap) {
-    return querySnap.docs
-        .map((doc) => Extra.fromfirestore(doc.id, doc.data()))
-        .toList();
+  return db.collection("/usuarios/$usuarioId/extras").snapshots().map((querySnap) {
+    return querySnap.docs.map((doc) => Extra.fromfirestore(doc.id, doc.data())).toList();
   });
 }
 
@@ -65,9 +82,7 @@ Stream<Extra> extraSnapshots(String usuarioId, String extraId) {
 //añadir un extra
 Future<void> addExtra(String idUsuario, Extra extra) async {
   final db = FirebaseFirestore.instance;
-  final doc = await db
-      .collection("/usuarios/$idUsuario/extras")
-      .add(extra.toFirestore());
+  final doc = await db.collection("/usuarios/$idUsuario/extras").add(extra.toFirestore());
   extra.id = doc.id;
 }
 
@@ -77,5 +92,5 @@ Future<void> updateExtra(String usuarioId, Extra extra) async {
       .doc(
         "/usuarios/$usuarioId/extras/${extra.id}",
       )
-      .update(extra.toFirestore());
+      .set(extra.toFirestore());
 }

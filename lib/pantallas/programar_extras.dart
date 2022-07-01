@@ -26,11 +26,17 @@ class _ProgramarState extends State<Programar> {
   late bool habilitadoDias;
   late bool habilitadoHoras;
 
+  Extra extra = Extra('', '');
+  List<String> diasSeleccionados = [];
+  String? idExtra;
+
   @override
   void initState() {
     super.initState();
     habilitadoDias = false;
     habilitadoHoras = false;
+    extra.repeticion = 'diaria';
+    extra.horas = [];
   }
 
   List<DateTime> calcularDiasParaCalendario(String dia, DateTime inicio, DateTime fin) {
@@ -93,11 +99,7 @@ class _ProgramarState extends State<Programar> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
-    Extra extra = Extra('', '');
-    List<String> diasSeleccionados = [];
-    extra.repeticion = 'diaria';
-    extra.horas = [];
-    String? idExtra;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),
@@ -130,9 +132,9 @@ class _ProgramarState extends State<Programar> {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              final extras = snapshot.data!;
+              final listaExtras = snapshot.data!;
 
-              if (extras.isEmpty) {
+              if (listaExtras.isEmpty) {
                 return const Center(child: Text("No hay extras"));
               }
               return SingleChildScrollView(
@@ -146,9 +148,9 @@ class _ProgramarState extends State<Programar> {
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Desplegable(
-                          extras: extras,
-                          onChanged: (String? idExtra) {
-                            idExtra = idExtra;
+                          extras: listaExtras,
+                          onChanged: (String? id) {
+                            extra.id = id;
                           }),
                       const SizedBox(
                         height: 10,
@@ -239,9 +241,8 @@ class _ProgramarState extends State<Programar> {
                         padding: const EdgeInsets.only(left: 200, top: 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            for (final e in extras) {
-                              if (e.id == idExtra) {
-                                extra.id = idExtra;
+                            for (final e in listaExtras) {
+                              if (e.id == extra.id) {
                                 extra.cantidad = e.cantidad;
                                 extra.nombre = e.nombre;
                               }
@@ -300,7 +301,7 @@ class _SelectorHoraState extends State<SelectorHora> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Horas: ${widget.horas}, Dias: ${widget.dias}'),
+        // Text('Horas: ${widget.horas}, Dias: ${widget.dias}'),
         Row(
           children: [
             ElevatedButton(
