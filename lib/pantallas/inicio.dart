@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_nutricional/util.dart';
 
 import '../clases/calendario.dart';
 import '../clases/comidas.dart';
@@ -119,9 +120,9 @@ class MenuDia extends StatelessWidget {
         List<String> comidasMenu = [];
 
         for (int i = 0; i < menus.length; i++) {
-          if (menus[i].fecha == today) {
+          if (fechasIguales(menus[i].fecha, today)) {
             for (var tipo in menus[i].franjas.keys) {
-              tipoComidas.add("$tipo"); //debugPrint(comidasMenu);
+              tipoComidas.add(franjaToString(tipo)); //debugPrint(comidasMenu);
             }
             for (var comida in menus[i].franjas.values) {
               comidasMenu.add(comida);
@@ -146,8 +147,8 @@ class MenuDia extends StatelessWidget {
             }
 
             List<Comida> comidasM = menuHoy(comidasMenu, comidas);
-            if (comidas.isEmpty) {
-              return const Text('No hay ningún menú programando para hoy');
+            if (comidasM.isEmpty) {
+              return const Center(child: Text('No hay ningún menú programando para hoy'));
             } else {
               return ListView.builder(
                 itemCount: comidasM.length,
