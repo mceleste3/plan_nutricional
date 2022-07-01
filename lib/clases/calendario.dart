@@ -31,19 +31,19 @@ class Calendario {
     final franjasFirestore = data['franjas'] as Map<String, dynamic>;
     for (var entry in franjasFirestore.entries) {
       switch (entry.key) {
-        case 'desayuno':
+        case 'FranjaHoraria.desayuno':
           franjas[FranjaHoraria.desayuno] = entry.value;
           break;
-        case 'snack':
+        case 'FranjaHoraria.snack':
           franjas[FranjaHoraria.snack] = entry.value;
           break;
-        case 'almuerzo':
+        case 'FranjaHoraria.almuerzo':
           franjas[FranjaHoraria.almuerzo] = entry.value;
           break;
-        case 'merienda':
+        case 'FranjaHoraria.merienda':
           franjas[FranjaHoraria.merienda] = entry.value;
           break;
-        case 'cena':
+        case 'FranjaHoraria.cena':
           franjas[FranjaHoraria.cena] = entry.value;
           break;
         default:
@@ -72,20 +72,13 @@ DateTime _conviertefechaFrom(Timestamp f) {
 
 Stream<List<Calendario>> calendarioListSnapshots(String usuarioId) {
   final db = FirebaseFirestore.instance;
-  return db
-      .collection("/usuarios/$usuarioId/calendario")
-      .snapshots()
-      .map((querySnap) {
-    return querySnap.docs
-        .map((doc) => Calendario.fromFirestore(doc.id, doc.data()))
-        .toList();
+  return db.collection("/usuarios/$usuarioId/calendario").snapshots().map((querySnap) {
+    return querySnap.docs.map((doc) => Calendario.fromFirestore(doc.id, doc.data())).toList();
   });
 }
 
 Future<void> addCalendario(String idUsuario, Calendario c) async {
   final db = FirebaseFirestore.instance;
-  final doc = await db
-      .collection("/usuarios/$idUsuario/calendario")
-      .add(c.toFirestore());
+  final doc = await db.collection("/usuarios/$idUsuario/calendario").add(c.toFirestore());
   c.id = doc.id;
 }
