@@ -8,6 +8,21 @@ enum FranjaHoraria {
   cena,
 }
 
+String franjaToString(FranjaHoraria f) {
+  switch (f) {
+    case FranjaHoraria.desayuno:
+      return "desayuno";
+    case FranjaHoraria.snack:
+      return "snack";
+    case FranjaHoraria.almuerzo:
+      return "almuerzo";
+    case FranjaHoraria.merienda:
+      return "merienda";
+    case FranjaHoraria.cena:
+      return "cena";
+  }
+}
+
 class Calendario {
   String? id;
   DateTime fecha;
@@ -31,19 +46,19 @@ class Calendario {
     final franjasFirestore = data['franjas'] as Map<String, dynamic>;
     for (var entry in franjasFirestore.entries) {
       switch (entry.key) {
-        case 'FranjaHoraria.desayuno':
+        case 'desayuno':
           franjas[FranjaHoraria.desayuno] = entry.value;
           break;
-        case 'FranjaHoraria.snack':
+        case 'snack':
           franjas[FranjaHoraria.snack] = entry.value;
           break;
-        case 'FranjaHoraria.almuerzo':
+        case 'almuerzo':
           franjas[FranjaHoraria.almuerzo] = entry.value;
           break;
-        case 'FranjaHoraria.merienda':
+        case 'merienda':
           franjas[FranjaHoraria.merienda] = entry.value;
           break;
-        case 'FranjaHoraria.cena':
+        case 'cena':
           franjas[FranjaHoraria.cena] = entry.value;
           break;
         default:
@@ -58,7 +73,7 @@ class Calendario {
     };
     final Map<String, String> franjasFirestore = {};
     for (var entry in franjas.entries) {
-      franjasFirestore[entry.key.toString()] = entry.value;
+      franjasFirestore[franjaToString(entry.key)] = entry.value;
     }
     data['franjas'] = franjasFirestore;
     return data;
