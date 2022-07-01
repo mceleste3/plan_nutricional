@@ -16,10 +16,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
   DateTime daySelected = DateTime.now();
 
   seleccionMenu(List<Comida> comidas) async {
-    // TODO: Aquí leer de Firestore la Comida de ese día.
-
-    // Ahora mismo está vacío
-    final menuDia = Calendario(daySelected);
+    final menuDia = await cargaCalendario(user.uid, daySelected);
 
     showDialog<bool>(
       context: context,
@@ -41,7 +38,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   Desplegable(
                     comidas: comidas,
-                    idComida: menuDia.franjas[FranjaHoraria.desayuno],
+                    seleccionInicial: menuDia.franjas[FranjaHoraria.desayuno],
                     onChanged: (String? idComida) {
                       if (idComida == null) {
                         menuDia.franjas.remove(FranjaHoraria.desayuno);
@@ -60,7 +57,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   Desplegable(
                     comidas: comidas,
-                    idComida: menuDia.franjas[FranjaHoraria.snack],
+                    seleccionInicial: menuDia.franjas[FranjaHoraria.snack],
                     onChanged: (String? idComida) {
                       if (idComida == null) {
                         menuDia.franjas.remove(FranjaHoraria.snack);
@@ -81,7 +78,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   Desplegable(
                     comidas: comidas,
-                    idComida: menuDia.franjas[FranjaHoraria.almuerzo],
+                    seleccionInicial: menuDia.franjas[FranjaHoraria.almuerzo],
                     onChanged: (String? idComida) {
                       if (idComida == null) {
                         menuDia.franjas.remove(FranjaHoraria.almuerzo);
@@ -95,12 +92,11 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Merienda',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
-                    idComida: menuDia.franjas[FranjaHoraria.merienda],
+                    seleccionInicial: menuDia.franjas[FranjaHoraria.merienda],
                     onChanged: (String? idComida) {
                       if (idComida == null) {
                         menuDia.franjas.remove(FranjaHoraria.merienda);
@@ -114,12 +110,11 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Cena',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
-                    idComida: menuDia.franjas[FranjaHoraria.cena],
+                    seleccionInicial: menuDia.franjas[FranjaHoraria.cena],
                     onChanged: (String? idComida) {
                       if (idComida == null) {
                         menuDia.franjas.remove(FranjaHoraria.cena);
@@ -176,8 +171,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
           }
           final comidas = snapshot.data!;
           return Padding(
-            padding:
-                const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
+            padding: const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
             child: Column(
               children: [
                 Expanded(
@@ -187,8 +181,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                       decoration: BoxDecoration(
                           color: const Color.fromRGBO(224, 212, 250, 1),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 166, 98, 178)),
+                          border: Border.all(color: const Color.fromARGB(255, 166, 98, 178)),
                           boxShadow: const [
                             BoxShadow(
                               blurRadius: 5,
@@ -234,8 +227,7 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                         ),
                       ),
                       ZonaBoton(
-                        text:
-                            '             Programar \n medicación/suplementos',
+                        text: '             Programar \n medicación/suplementos',
                         child: Boton(
                           icon: Icons.medication,
                           onPressed: () {
@@ -257,14 +249,14 @@ class Desplegable extends StatefulWidget {
   const Desplegable({
     Key? key,
     required this.comidas,
-    required this.idComida,
+    required this.seleccionInicial,
     required this.onChanged,
   }) : super(key: key);
 
   @override
   State<Desplegable> createState() => _DesplegableState();
   final List<Comida> comidas;
-  final dynamic idComida;
+  final String? seleccionInicial;
   final void Function(String?) onChanged;
 }
 
@@ -272,23 +264,32 @@ class _DesplegableState extends State<Desplegable> {
   String? dropdownValue;
 
   @override
+  void initState() {
+    super.initState();
+    dropdownValue = widget.seleccionInicial;
+  }
+
+  List<DropdownMenuItem<String?>> calculaValoresPosibles() {
+    return [
+      for (int i = 0; i < widget.comidas.length; i++)
+        DropdownMenuItem<String>(
+          value: widget.comidas[i].id,
+          child: Text(
+            widget.comidas[i].nombre.substring(0, 15),
+          ),
+        ),
+      const DropdownMenuItem<String>(
+        value: null,
+        child: Text('ninguno'),
+      )
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DropdownButton(
+    return DropdownButton<String?>(
       value: dropdownValue,
-      items: [
-        for (int i = 0; i <= widget.comidas.length; i++)
-          DropdownMenuItem<String>(
-            value: i == widget.comidas.length ? null : widget.comidas[i].id,
-            child: i == widget.comidas.length
-                ? const Text('ninguno')
-                : Text(widget.comidas[i].nombre.substring(0, 15)),
-            /*       onTap: () {
-              debugPrint(
-                "Has seleccionado la comida ${widget.comidas[i].nombre}",
-              );
-            },*/
-          )
-      ],
+      items: calculaValoresPosibles(),
       onChanged: (String? selectedValue) {
         widget.onChanged(selectedValue);
         setState(() {

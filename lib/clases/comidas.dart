@@ -60,10 +60,7 @@ class Comida {
 }
 
 List<Ingrediente> _convierteIngredientes(List list) {
-  return list
-      .map((item) => Ingrediente.fromFirestore(item))
-      .toList()
-      .cast<Ingrediente>();
+  return list.map((item) => Ingrediente.fromFirestore(item)).toList().cast<Ingrediente>();
 }
 
 List<Map<String, String>> _ingredientestoFirestore(List<Ingrediente> list) {
@@ -80,13 +77,8 @@ Stream<List<Comida>> comidaListSnapshots(
   String usuarioId,
 ) {
   final db = FirebaseFirestore.instance;
-  return db
-      .collection("/usuarios/$usuarioId/comidas")
-      .snapshots()
-      .map((querySnap) {
-    return querySnap.docs
-        .map((doc) => Comida.fromFirestore(doc.id, doc.data()))
-        .toList();
+  return db.collection("/usuarios/$usuarioId/comidas").snapshots().map((querySnap) {
+    return querySnap.docs.map((doc) => Comida.fromFirestore(doc.id, doc.data())).toList();
   });
 }
 
@@ -100,8 +92,7 @@ Stream<Comida> comidaSnapshots(String usuarioId, String comidaId) {
 //Agregar una comida
 Future<void> addComida(String idUsuario, Comida c) async {
   final db = FirebaseFirestore.instance;
-  final doc =
-      await db.collection("/usuarios/$idUsuario/comidas").add(c.toFirestore());
+  final doc = await db.collection("/usuarios/$idUsuario/comidas").add(c.toFirestore());
   c.id = doc.id;
 }
 

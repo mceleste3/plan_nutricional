@@ -33,7 +33,7 @@ class Calendario {
   */
   Map<FranjaHoraria, String> franjas = {};
 
-  Calendario(this.fecha);
+  Calendario(DateTime f) : fecha = DateTime(f.year, f.month, f.day);
 
   Timestamp _conviertefechaTo(DateTime f) {
     Timestamp times = Timestamp.fromDate(f);
@@ -94,6 +94,26 @@ Stream<List<Calendario>> calendarioListSnapshots(String usuarioId) {
 
 Future<void> addCalendario(String idUsuario, Calendario c) async {
   final db = FirebaseFirestore.instance;
-  final doc = await db.collection("/usuarios/$idUsuario/calendario").add(c.toFirestore());
-  c.id = doc.id;
+  if (c.id != null) {
+    await db.doc("/usuarios/$idUsuario/calendario/${c.id}").set(c.toFirestore());
+  } else {
+    final doc = await db.collection("/usuarios/$idUsuario/calendario").add(c.toFirestore());
+    c.id = doc.id;
+  }
+}
+
+Future<Calendario> cargaCalendario(String idUsuario, DateTime fecha) async {
+  final fechaDia = DateTime(fecha.year, fecha.month, fecha.day);
+  final db = FirebaseFirestore.instance;
+  final query = await db
+      .collection("/usuarios/$idUsuario/calendario")
+      .where("fecha", isEqualTo: fechaDia)
+      .limit(1)
+      .get();
+  if (query.docs.isEmpty) {
+    return Calendario(fechaDia);
+  } else {
+    final doc = query.docs[0];
+    return Calendario.fromFirestore(doc.id, doc.data());
+  }
 }
