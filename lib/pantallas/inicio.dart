@@ -53,11 +53,12 @@ class Inicio extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(255, 221, 221, 221)),
-            child: SingleChildScrollView(child: ExtrasProgramados(id: userid)),
+            child: ExtrasProgramados(id: userid),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 20),
+          padding:
+              const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 20),
           child: Container(
             height: 340,
             width: 350,
@@ -131,7 +132,8 @@ class MenuDia extends StatelessWidget {
         }
         return StreamBuilder(
           stream: comidaListSnapshots(id),
-          builder: (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Comida>> snapshot) {
             if (snapshot.hasError) {
               return ErrorWidget(snapshot.error.toString());
             }
@@ -148,13 +150,18 @@ class MenuDia extends StatelessWidget {
 
             List<Comida> comidasM = menuHoy(comidasMenu, comidas);
             if (comidasM.isEmpty) {
-              return const Center(child: Text('No hay ningún menú programando para hoy'));
+              return const Center(
+                  child: Text('No hay ningún menú programando para hoy'));
             } else {
               return ListView.builder(
                 itemCount: comidasM.length,
                 itemBuilder: (context, index) {
                   final comida = comidasM[index];
-                  return ComidaWidget(comida: comida, tipo: tipoComidas, index: index);
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ComidaWidget(
+                        comida: comida, tipo: tipoComidas, index: index),
+                  );
                 },
               );
             }
@@ -166,7 +173,8 @@ class MenuDia extends StatelessWidget {
 }
 
 class ComidaWidget extends StatelessWidget {
-  const ComidaWidget({Key? key, required this.comida, required this.tipo, required this.index})
+  const ComidaWidget(
+      {Key? key, required this.comida, required this.tipo, required this.index})
       : super(key: key);
 
   final Comida comida;
@@ -174,9 +182,10 @@ class ComidaWidget extends StatelessWidget {
   final int index;
   static const TextStyle titleStyle =
       TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14);
-  static const TextStyle subtitleStyle =
-      TextStyle(color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 13);
-  static const TextStyle ingredientStyle = TextStyle(color: Colors.black, fontSize: 13);
+  static const TextStyle subtitleStyle = TextStyle(
+      color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 13);
+  static const TextStyle ingredientStyle =
+      TextStyle(color: Colors.black, fontSize: 13);
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +211,8 @@ class ComidaWidget extends StatelessWidget {
             comida.nombre,
             style: titleStyle,
           ),
-          Text("Carbohidrato: ${comida.carbohidrato.join(", ")}", style: ingredientStyle),
+          Text("Carbohidrato: ${comida.carbohidrato.join(", ")}",
+              style: ingredientStyle),
           Text(
             "Proteína: ${comida.proteina.join(", ")}",
             style: ingredientStyle,
@@ -224,14 +234,14 @@ class ExtrasProgramados extends StatelessWidget {
   List<Extra> extrasHoy(List<Extra> extras, DateTime today) {
     List<Extra> extrashoy = [];
     for (int i = 0; i < extras.length; i++) {
-      if (extras[i].repeticion.toUpperCase() == 'SEMANAL') {
+      if (extras[i].repeticion.toUpperCase() == 'SEMANALMENTE') {
         for (int j = 0; j < extras[i].dias!.length; j++) {
           if (fechasIguales(extras[i].dias![j], today)) {
             extrashoy.add(extras[i]);
           }
         }
       }
-      if (extras[i].repeticion.toUpperCase() == 'DIARIA') {
+      if (extras[i].repeticion.toUpperCase() == 'DIARIAMENTE') {
         extrashoy.add(extras[i]);
       }
     }
@@ -256,13 +266,12 @@ class ExtrasProgramados extends StatelessWidget {
         final extras = snapshot.data!;
         List<Extra> extrasdeHoy = extrasHoy(extras, today);
 
-        if (extras.isEmpty) {
-          return Container(
-            height: 150,
-            width: 340,
-            color: Colors.black26,
-            child: const Center(child: Text("No hay suplementos/medicamentos programados")),
-          );
+        if (extrasdeHoy.isEmpty || extras.isEmpty) {
+          return const Center(
+              child: Text(
+            "No hay suplementos/medicamentos programados",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ));
         }
         return Padding(
           padding: const EdgeInsets.all(8.0),
@@ -271,7 +280,8 @@ class ExtrasProgramados extends StatelessWidget {
               shrinkWrap: true,
               itemCount: extrasdeHoy.length,
               itemBuilder: (context, index) {
-                if (extrasdeHoy[index].repeticion.toLowerCase() == "semanal") {
+                if (extrasdeHoy[index].repeticion.toLowerCase() ==
+                    "semanalmente") {
                   return ListTile(
                     title: Text(
                       "- ${extrasdeHoy[index].nombre.toUpperCase()}",
@@ -282,7 +292,8 @@ class ExtrasProgramados extends StatelessWidget {
                       style: const TextStyle(fontSize: 15),
                     ),
                   );
-                } else if (extrasdeHoy[index].repeticion.toLowerCase() == "diaria") {
+                } else if (extrasdeHoy[index].repeticion.toLowerCase() ==
+                    "diariamente") {
                   return ListTile(
                     title: Text(
                       "- ${extrasdeHoy[index].nombre.toUpperCase()}",
@@ -291,12 +302,14 @@ class ExtrasProgramados extends StatelessWidget {
                     subtitle: Text(
                       "  Horas: ${extrasdeHoy[index].listaDeHoras()}",
                       style: const TextStyle(fontSize: 15),
-                    ), //poner la lista de horas
+                    ),
                   );
                 } else if (extrasdeHoy[index].repeticion.toLowerCase() == "") {
-                  return const Text('No hay suplementos/medicamentos programados');
+                  return const Text(
+                      'No hay suplementos/medicamentos programados');
                 } else {
-                  return const Text('No hay suplementos/medicamentos programados');
+                  return const Text(
+                      'No hay suplementos/medicamentos programados');
                 }
               }),
         );

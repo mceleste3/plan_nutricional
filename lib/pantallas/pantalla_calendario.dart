@@ -92,7 +92,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Merienda',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
@@ -110,7 +111,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   ),
                   const Text(
                     'Cena',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                   Desplegable(
                     comidas: comidas,
@@ -171,7 +173,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
           }
           final comidas = snapshot.data!;
           return Padding(
-            padding: const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
+            padding:
+                const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 25),
             child: Column(
               children: [
                 Expanded(
@@ -181,7 +184,8 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                       decoration: BoxDecoration(
                           color: const Color.fromRGBO(224, 212, 250, 1),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color.fromARGB(255, 166, 98, 178)),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 166, 98, 178)),
                           boxShadow: const [
                             BoxShadow(
                               blurRadius: 5,
@@ -220,14 +224,14 @@ class _PantallaCalendarioState extends State<PantallaCalendario> {
                   child: Row(
                     children: [
                       ZonaBoton(
-                        text: 'Selección del \n       menú',
+                        text: 'Selección \n      del \n   menú',
                         child: Boton(
                           icon: Icons.edit,
                           onPressed: () => seleccionMenu(comidas),
                         ),
                       ),
                       ZonaBoton(
-                        text: '             Programar \n medicación/suplementos',
+                        text: '  Programar \n medicación y\n suplementos',
                         child: Boton(
                           icon: Icons.medication,
                           onPressed: () {
