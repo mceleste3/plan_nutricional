@@ -62,28 +62,65 @@ class Extras extends StatelessWidget {
                   ],
                 );
               }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 9,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 25),
-                      child: SingleChildScrollView(
-                          child: ExtraLista(
-                        listaExtras: extras,
-                        id: userid,
-                      )),
+              return Padding(
+                padding: const EdgeInsets.only(top: 20, right: 8, left: 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: const [
+                        SizedBox(
+                          width: 18,
+                        ),
+                        Text(
+                          'Medicamentos / Suplementos',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AgregarExtra(id: userid),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        children: const [
+                          Text("Nombre",
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                          SizedBox(
+                            width: 109,
+                          ),
+                          Text("Cantidad",
+                              style: TextStyle(fontWeight: FontWeight.w500))
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: extras.length,
+                          itemBuilder: (context, index) {
+                            return CasillaExtra(
+                              extra: extras[index],
+                              usuarioId: userid,
+                            );
+                          }),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AgregarExtra(id: userid),
+                      ),
+                    )
+                  ],
+                ),
               );
             },
           );
@@ -233,45 +270,48 @@ class ExtraLista extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: Text(
-            'Medicamentos / Suplementos',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return Padding(
+      padding: const EdgeInsets.only(top: 25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Text(
+              'Medicamentos / Suplementos',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Row(
-            children: const [
-              Text("Nombre", style: TextStyle(fontWeight: FontWeight.w500)),
-              SizedBox(
-                width: 109,
-              ),
-              Text("Cantidad", style: TextStyle(fontWeight: FontWeight.w500))
-            ],
+          const SizedBox(
+            height: 20,
           ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: listaExtras.length,
-            itemBuilder: (context, index) {
-              return CasillaExtra(
-                extra: listaExtras[index],
-                usuarioId: id,
-              );
-            }),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              children: const [
+                Text("Nombre", style: TextStyle(fontWeight: FontWeight.w500)),
+                SizedBox(
+                  width: 109,
+                ),
+                Text("Cantidad", style: TextStyle(fontWeight: FontWeight.w500))
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: listaExtras.length,
+              itemBuilder: (context, index) {
+                return CasillaExtra(
+                  extra: listaExtras[index],
+                  usuarioId: id,
+                );
+              }),
+        ],
+      ),
     );
   }
 }
