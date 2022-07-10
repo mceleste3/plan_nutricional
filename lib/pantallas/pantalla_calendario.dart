@@ -278,9 +278,9 @@ class _DesplegableState extends State<Desplegable> {
       for (int i = 0; i < widget.comidas.length; i++)
         DropdownMenuItem<String>(
           value: widget.comidas[i].id,
-          child: Text(
-            widget.comidas[i].nombre.substring(0, 15),
-          ),
+          child: Text(widget.comidas[i].nombre.length < 20
+              ? widget.comidas[i].nombre
+              : widget.comidas[i].nombre.substring(0, 20)),
         ),
       const DropdownMenuItem<String>(
         value: null,

@@ -74,7 +74,7 @@ class _AddComidaState extends State<AddComida> {
                 ),
                 SizedBox(
                   height: 40,
-                  width: 130,
+                  width: 250,
                   child: TextField(
                     controller: _nombre,
                     decoration: const InputDecoration(
